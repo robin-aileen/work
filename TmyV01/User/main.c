@@ -510,7 +510,9 @@ static void vTaskMotorCtrl(void *pvParameters)
 			}
 			
 			//自动给药判断
-			if(1)//在xxx速度下
+			if( ( Tmy.speed == SLOWEST )   //慢慢速
+                || ( Tmy.speed == SLOW ) //常慢速
+              )
 			{
 				if( ( !Tmy.State.bit.zdgy ) && ( timer_pedal_down > TIME_ZDGY_ENABLE ) ) //按下脚踏时间大于TIME_CRUISE_START秒
 				{
