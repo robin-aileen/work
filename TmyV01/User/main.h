@@ -20,6 +20,7 @@
 
 #define ONE_CYCLE_STEP	6400 //一转的步数
 
+#define STEP_HX_ENABLE	0 //回吸有效距离
 #define STEP_MAX_ZDPK   36745 //( ONE_CYCLE_STEP*3 ) //自动排空步数 5.7414转=36,744.96步~=36745步
 #define STEP_MAX_ECPK   13120 //二次排空步数 2.05转 2.5mm =13120?步
 #define MAX_PRESSURE    1000 //压力传感器过压值
@@ -44,7 +45,8 @@ typedef struct
     uint8_t zh          :1; //1.8ml 2.2ml转换
     uint8_t fix         :1; //检修
     uint8_t px          :1; //培训
-    uint8_t             :2;
+    uint8_t jjzd        :1; //紧急制动 emergency stop
+	uint8_t             :1; //
 }TYPE_TMY_KEY_BIT;
 
 

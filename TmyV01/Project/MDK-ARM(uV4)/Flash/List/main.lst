@@ -58,14 +58,14 @@ N/* Copyright (C) Codemist Ltd., 1988                            */
 N/* Copyright (C) ARM Ltd., 1991-1999. All rights reserved */
 N
 N/*
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185525 $
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: agrant $
 N */
 N
 N#ifndef __stdarg_h
 N#define __stdarg_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N  #ifndef __STDARG_DECLS
 N  #define __STDARG_DECLS
@@ -155,8 +155,8 @@ N    */
 N
 N#define __va_copy(dest, src) ((void)((dest) = (src)))
 N
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X#if !0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+X#if !0L || (1L && 199901L <= 199409L)
 N   /* va_copy is in C99 and non-strict C90 and non-strict C++
 N    * __va_copy is always present.
 N    */
@@ -211,8 +211,8 @@ N/* Copyright (C) Codemist Ltd., 1988-1993                       */
 N/* Copyright 1991-1998 ARM Limited. All rights reserved.        */
 N
 N/*
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185531 $
+N * Checkin $Date: 2014-05-29 15:16:06 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: sdouglas $
 N */
 N
@@ -225,7 +225,7 @@ N */
 N
 N#ifndef __stdio_h
 N#define __stdio_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N/*
 N * Depending on compiler version __int64 or __INT64_TYPE__ should be defined.
@@ -662,14 +662,8 @@ N    * is equivalent to sprintf, but does not support floating-point formats.
 N    * You can use instead of sprintf to improve code size.
 N    * Returns: as sprintf.
 N    */
-N
-N#pragma __printf_args
-Nextern _ARMABI int __ARM_snprintf(char * __restrict /*s*/, size_t /*n*/,
-Xextern __declspec(__nothrow) int __ARM_snprintf(char * __restrict  , size_t  ,
-N                     const char * __restrict /*format*/, ...) __attribute__((__nonnull__(3)));
-N
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X#if !0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+X#if !0L || (1L && 199901L <= 199409L)
 N#pragma __printf_args
 Nextern _ARMABI int snprintf(char * __restrict /*s*/, size_t /*n*/,
 Xextern __declspec(__nothrow) int snprintf(char * __restrict  , size_t  ,
@@ -788,8 +782,8 @@ N    * is equivalent to sscanf, but does not support floating-point formats.
 N    * You can use instead of sscanf to improve code size.
 N    * Returns: as sscanf.
 N    */
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X#if !0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+X#if !0L || (1L && 199901L <= 199409L)
 N/* C99 additions */
 Nextern _ARMABI int vfscanf(FILE * __restrict /*stream*/, const char * __restrict /*format*/, __va_list) __attribute__((__nonnull__(1,2)));
 Xextern __declspec(__nothrow) int vfscanf(FILE * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
@@ -804,8 +798,6 @@ Nextern _ARMABI int _vscanf(const char * __restrict /*format*/, __va_list) __att
 Xextern __declspec(__nothrow) int _vscanf(const char * __restrict  , __va_list) __attribute__((__nonnull__(1)));
 Nextern _ARMABI int _vsscanf(const char * __restrict /*s*/, const char * __restrict /*format*/, __va_list) __attribute__((__nonnull__(1,2)));
 Xextern __declspec(__nothrow) int _vsscanf(const char * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
-Nextern _ARMABI int __ARM_vsscanf(const char * __restrict /*s*/, const char * __restrict /*format*/, __va_list) __attribute__((__nonnull__(1,2)));
-Xextern __declspec(__nothrow) int __ARM_vsscanf(const char * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
 N
 Nextern _ARMABI int vprintf(const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(1)));
 Xextern __declspec(__nothrow) int vprintf(const char * __restrict  , __va_list  ) __attribute__((__nonnull__(1)));
@@ -845,11 +837,8 @@ N    * va_end function.
 N    * Returns: the number of characters written in the array, not counting the
 N    *          terminating null character.
 N    */
-Nextern _ARMABI int __ARM_vsnprintf(char * __restrict /*s*/, size_t /*n*/,
-Xextern __declspec(__nothrow) int __ARM_vsnprintf(char * __restrict  , size_t  ,
-N                     const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(3)));
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X#if !0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+X#if !0L || (1L && 199901L <= 199409L)
 Nextern _ARMABI int vsnprintf(char * __restrict /*s*/, size_t /*n*/,
 Xextern __declspec(__nothrow) int vsnprintf(char * __restrict  , size_t  ,
 N                     const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(3)));
@@ -887,30 +876,6 @@ N    * is equivalent to vsnprintf, but does not support floating-point formats.
 N    * You can use instead of vsnprintf to improve code size.
 N    * Returns: as vsnprintf.
 N    */
-N#if !defined(__STRICT_ANSI__)
-X#if !0L
-N#pragma __printf_args
-Nextern _ARMABI int asprintf(char ** /*strp*/, const char * __restrict /*format*/, ...) __attribute__((__nonnull__(2)));
-Xextern __declspec(__nothrow) int asprintf(char **  , const char * __restrict  , ...) __attribute__((__nonnull__(2)));
-Nextern _ARMABI int vasprintf(char ** /*strp*/, const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(2)));
-Xextern __declspec(__nothrow) int vasprintf(char **  , const char * __restrict  , __va_list  ) __attribute__((__nonnull__(2)));
-N#endif
-N#pragma __printf_args
-Nextern _ARMABI int __ARM_asprintf(char ** /*strp*/, const char * __restrict /*format*/, ...) __attribute__((__nonnull__(2)));
-Xextern __declspec(__nothrow) int __ARM_asprintf(char **  , const char * __restrict  , ...) __attribute__((__nonnull__(2)));
-Nextern _ARMABI int __ARM_vasprintf(char ** /*strp*/, const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(2)));
-Xextern __declspec(__nothrow) int __ARM_vasprintf(char **  , const char * __restrict  , __va_list  ) __attribute__((__nonnull__(2)));
-N   /*
-N    * dynamically allocates a buffer of the right size for the
-N    * formatted string, and returns it in (*strp). Formal return value
-N    * is the same as any other printf variant, except that it returns
-N    * -1 if the buffer could not be allocated.
-N    *
-N    * (The functions with __ARM_ prefixed names are identical to the
-N    * ones without, but are available in all compilation modes without
-N    * violating user namespace.)
-N    */
-N
 Nextern _ARMABI int fgetc(FILE * /*stream*/) __attribute__((__nonnull__(1)));
 Xextern __declspec(__nothrow) int fgetc(FILE *  ) __attribute__((__nonnull__(1)));
 N   /*
@@ -1251,7 +1216,7 @@ S    using ::std::printf;
 S    using ::std::_printf;
 S    using ::std::sprintf;
 S    using ::std::_sprintf;
-S    #if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
+S    #if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
 S      using ::std::snprintf;
 S      using ::std::vsnprintf;
 S      using ::std::vfscanf;
@@ -1260,15 +1225,6 @@ S      using ::std::vsscanf;
 S    #endif
 S    using ::std::_snprintf;
 S    using ::std::_vsnprintf;
-S#if !defined(__STRICT_ANSI__)
-S    using ::std::asprintf;
-S    using ::std::vasprintf;
-S#endif
-S    using ::std::__ARM_asprintf;
-S    using ::std::__ARM_vasprintf;
-S    using ::std::__ARM_vsnprintf;
-S    using ::std::__ARM_snprintf;
-S    using ::std::__ARM_vsscanf;
 S    using ::std::fscanf;
 S    using ::std::_fscanf;
 S    using ::std::scanf;
@@ -1323,8 +1279,8 @@ N/* stdlib.h: ANSI draft (X3J11 May 88) library header, section 4.10 */
 N/* Copyright (C) Codemist Ltd., 1988-1993.                          */
 N/* Copyright 1991-1998,2014 ARM Limited. All rights reserved.       */
 N/*
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185525 $
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: agrant $
 N */
 N 
@@ -1335,7 +1291,7 @@ N */
 N
 N#ifndef __stdlib_h
 N#define __stdlib_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N#if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
 X#if 0L || (1L && !0L)
@@ -1359,8 +1315,8 @@ N   * Some of these declarations are new in C99.  To access them in C++
 N   * you can use -D__USE_C99_STDLIB (or -D__USE_C99ALL).
 N   */
 N  #ifndef __USE_C99_STDLIB
-N    #if defined(__USE_C99_ALL) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X    #if 0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+N    #if defined(__USE_C99_ALL) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+X    #if 0L || (1L && 199901L <= 199409L)
 S      #define __USE_C99_STDLIB 1
 N    #endif
 N  #endif
@@ -2299,8 +2255,8 @@ N * Copyright 1991-1998,2004-2006,2014 ARM Limited. All rights reserved
 N */
 N
 N/*
-N * RCS $Revision$ Codemist 0.03
-N * Checkin $Date$
+N * RCS $Revision: 185525 $ Codemist 0.03
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: statham $
 N */
 N
@@ -2319,7 +2275,7 @@ N */
 N
 N#ifndef __math_h
 N#define __math_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N#if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
 X#if 0L || (1L && !0L)
@@ -2335,8 +2291,8 @@ N * Some of these declarations are new in C99.  To access them in C++
 N * you can use -D__USE_C99_MATH (or -D__USE_C99_ALL).
 N */
 N#ifndef __USE_C99_MATH
-N  #if defined(__USE_C99_ALL) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X  #if 0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+N  #if defined(__USE_C99_ALL) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+X  #if 0L || (1L && 199901L <= 199409L)
 S    #define __USE_C99_MATH 1
 N  #endif
 N#endif
@@ -3259,8 +3215,7 @@ X__declspec(__nothrow) long double rintl(long double );
 N
 N#endif
 N
-N#if (defined(__clang__) && !defined(__STRICT_ANSI)) || defined(__USE_C99_MATH)
-X#if (0L && !0L) || 0L
+N#ifdef __USE_C99_MATH
 S/*
 S * Functions new in C99.
 S */
@@ -3364,26 +3319,7 @@ N#undef _ARMDEFLD1
 N#undef _ARMDEFLD1P
 N#undef _ARMDEFLD2
 N
-N#if defined(__cplusplus) && ((!defined(__STRICT_ANSI__) || defined(__USE_C99_MATH)) || defined(__ARMCOMPILER_LIBCXX))
-X#if 0L && ((!0L || 0L) || 0L)
-S  extern "C++" {
-S    inline int (fpclassify)(double __x) { return fpclassify(__x); }
-S    inline bool (isfinite)(double __x) { return isfinite(__x); }
-S    inline bool (isgreater)(double __x, double __y) { return isgreater(__x, __y); }
-S    inline bool (isgreaterequal)(double __x, double __y) { return isgreaterequal(__x, __y); }
-S    inline bool (isinf)(double __x) { return isinf(__x); }
-S    inline bool (isless)(double __x, double __y) { return isless(__x, __y); }
-S    inline bool (islessequal)(double __x, double __y) { return islessequal(__x, __y); }
-S    inline bool (islessgreater)(double __x, double __y) { return islessgreater(__x, __y); }
-S    inline bool (isnan)(double __x) { return isnan(__x); }
-S    inline bool (isnormal)(double __x) { return isnormal(__x); }
-S    inline bool (isunordered)(double __x, double __y) { return isunordered(__x, __y); }
-S
-S  }
-N#endif
-N
-N#if defined(__cplusplus) && !defined(__ARMCOMPILER_LIBCXX)
-X#if 0L && !0L
+N#ifdef __cplusplus
 S  extern "C++" {
 S    inline float abs(float __x)   { return fabsf(__x); }
 S    inline float acos(float __x)  { return acosf(__x); }
@@ -3504,18 +3440,6 @@ S    inline _ARMABI_FPEXCEPT float round(float __x) { return roundf(__x); }
 S    inline float tgamma(float __x) { return tgammaf(__x); }
 S    inline _ARMABI_FPEXCEPT float trunc(float __x) { return truncf(__x); }
 S
-S    inline int (fpclassify)(float __x) { return fpclassify(__x); }
-S    inline bool (isfinite)(float __x) { return isfinite(__x); }
-S    inline bool (isgreater)(float __x, float __y) { return isgreater(__x, __y); }
-S    inline bool (isgreaterequal)(float __x, float __y) { return isgreaterequal(__x, __y); }
-S    inline bool (isinf)(float __x) { return isinf(__x); }
-S    inline bool (isless)(float __x, float __y) { return isless(__x, __y); }
-S    inline bool (islessequal)(float __x, float __y) { return islessequal(__x, __y); }
-S    inline bool (islessgreater)(float __x, float __y) { return islessgreater(__x, __y); }
-S    inline bool (isnan)(float __x) { return isnan(__x); }
-S    inline bool (isnormal)(float __x) { return isnormal(__x); }
-S    inline bool (isunordered)(float __x, float __y) { return isunordered(__x, __y); }
-S
 S#ifdef __HAVE_LONGDOUBLE
 S    inline long double acosh(long double __x) { return acoshl(__x); }
 S    inline long double asinh(long double __x) { return asinhl(__x); }
@@ -3544,31 +3468,7 @@ S    inline long double remquo(long double __x, long double __y, int *__q) { ret
 S    inline _ARMABI_FPEXCEPT long double round(long double __x) { return roundl(__x); }
 S    inline long double tgamma(long double __x) { return tgammal(__x); }
 S    inline _ARMABI_FPEXCEPT long double trunc(long double __x) { return truncl(__x); }
-S    inline int (fpclassify)(long double __x) { return fpclassify(__x); }
-S    inline bool (isfinite)(long double __x) { return isfinite(__x); }
-S    inline bool (isgreater)(long double __x, long double __y) { return isgreater(__x, __y); }
-S    inline bool (isgreaterequal)(long double __x, long double __y) { return isgreaterequal(__x, __y); }
-S    inline bool (isinf)(long double __x) { return isinf(__x); }
-S    inline bool (isless)(long double __x, long double __y) { return isless(__x, __y); }
-S    inline bool (islessequal)(long double __x, long double __y) { return islessequal(__x, __y); }
-S    inline bool (islessgreater)(long double __x, long double __y) { return islessgreater(__x, __y); }
-S    inline bool (isnan)(long double __x) { return isnan(__x); }
-S    inline bool (isnormal)(long double __x) { return isnormal(__x); }
-S    inline bool (isunordered)(long double __x, long double __y) { return isunordered(__x, __y); }
 S#endif
-S
-S#undef fpclassify
-S#undef isfinite
-S#undef isgreater
-S#undef isgreaterequal
-S#undef isinf
-S#undef isless
-S#undef islessequal
-S#undef islessgreater
-S#undef isnan
-S#undef isnormal
-S#undef isunordered
-S
 S#endif
 S
 S  }
@@ -3588,9 +3488,7 @@ N
 N  #if defined(__cplusplus) && !defined(__MATH_NO_EXPORTS)
 X  #if 0L && !0L
 S    using ::std::__use_accurate_range_reduction;
-S    #ifndef __ARMCOMPILER_LIBCXX
-S      using ::std::abs;
-S    #endif
+S    using ::std::abs;
 S    using ::std::acos;
 S    using ::std::asin;
 S    using ::std::atan2;
@@ -3721,11 +3619,13 @@ S      using ::std::remainderf;
 S      using ::std::remainderl;
 S      using ::std::rintf;
 S      using ::std::rintl;
-S      /* New in C99. */
+S    #endif
+S    #if !defined(__STRICT_ANSI__) || defined(__USE_C99_MATH)
+S      /* C99 additions which appear in C99 or non-strict mode */
 S      using ::std::float_t;
 S      using ::std::double_t;
 S    #endif
-S    #if (defined(__clang__) && !defined(__STRICT_ANSI)) || defined(__USE_C99_MATH)
+S    #ifdef __USE_C99_MATH
 S      /* Functions new in C99. */
 S      using ::std::exp2;
 S      using ::std::exp2f;
@@ -3789,20 +3689,6 @@ S      using ::std::tgammal;
 S      using ::std::trunc;
 S      using ::std::truncf;
 S      using ::std::truncl;
-S    #endif
-S
-S    #if !defined(__STRICT_ANSI__) || defined(__USE_C99_MATH)
-S      using ::std::fpclassify;
-S      using ::std::isfinite;
-S      using ::std::isgreater;
-S      using ::std::isgreaterequal;
-S      using ::std::isinf;
-S      using ::std::isless;
-S      using ::std::islessequal;
-S      using ::std::islessgreater;
-S      using ::std::isnan;
-S      using ::std::isnormal;
-S      using ::std::isunordered;
 S    #endif
 N  #endif
 N
@@ -3909,8 +3795,8 @@ N/* stddef.h: ANSI 'C' (X3J11 Oct 88) library header, section 4.1.4 */
 N
 N/* Copyright (C) ARM Ltd., 1999
 N * All rights reserved
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185525 $
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: agrant $
 N */
 N
@@ -3926,7 +3812,7 @@ N */
 N
 N#ifndef __stddef_h
 N#define __stddef_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N  #ifndef __STDDEF_DECLS
 N  #define __STDDEF_DECLS
@@ -4003,11 +3889,6 @@ N  /* EDG uses __INTADDR__ to avoid errors when strict */
 N  #define offsetof(t, memb) ((__CLIBNS size_t)__INTADDR__(&(((t *)0)->memb)))
 N#endif
 N
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 201112L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X#if !0L || (1L && 201112L <= 199409L) || (0L && 201103L <= __cplusplus)
-N  typedef long double max_align_t;
-N#endif
-N
 N    #ifdef __cplusplus
 S         }  /* extern "C" */
 S      }  /* namespace std */
@@ -4019,9 +3900,6 @@ N  #ifdef __cplusplus
 S    #ifndef __STDDEF_NO_EXPORTS
 S      using ::std::size_t;
 S      using ::std::ptrdiff_t;
-S      #if !defined(__STRICT_ANSI__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-S        using ::std::max_align_t;
-S      #endif
 S    #endif 
 N  #endif /* __cplusplus */
 N
@@ -4050,14 +3928,14 @@ N/* Copyright (C) ARM Ltd., 1999,2014 */
 N/* All rights reserved */
 N
 N/*
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185525 $
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: agrant $
 N */
 N
 N#ifndef __stdint_h
 N#define __stdint_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N  #ifdef __INT64_TYPE__
 S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
@@ -4249,9 +4127,9 @@ N
 N    /* maximum value of pointer-holding unsigned integer type */
 N#if __sizeof_ptr == 8
 X#if 4 == 8
-S#define UINTPTR_MAX UINT64_MAX
+S#define UINTPTR_MAX INT64_MAX
 N#else
-N#define UINTPTR_MAX UINT32_MAX
+N#define UINTPTR_MAX INT32_MAX
 N#endif
 N
 N    /* 7.18.2.5 */
@@ -12624,7 +12502,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5060750 < 400677)
+X#if (5050106 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -13252,7 +13130,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5060750 < 400677)
+X#if (5050106 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -41852,8 +41730,8 @@ N/* Copyright 1991-1993 ARM Limited. All rights reserved.          */
 N/* version 0.04 */
 N
 N/*
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185525 $
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N */
 N
 N/*
@@ -41867,7 +41745,7 @@ N */
 N
 N#ifndef __string_h
 N#define __string_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N#define _ARMABI __declspec(__nothrow)
 N
@@ -44368,6 +44246,7 @@ N#endif
 N
 N#define ONE_CYCLE_STEP	6400 //一转的步数
 N
+N#define STEP_HX_ENABLE	0 //回吸有效距离
 N#define STEP_MAX_ZDPK   36745 //( ONE_CYCLE_STEP*3 ) //自动排空步数 5.7414转=36,744.96步~=36745步
 N#define STEP_MAX_ECPK   13120 //二次排空步数 2.05转 2.5mm =13120?步
 N#define MAX_PRESSURE    1000 //压力传感器过压值
@@ -44392,7 +44271,8 @@ N    uint8_t ecpk        :1; //二次排空
 N    uint8_t zh          :1; //1.8ml 2.2ml转换
 N    uint8_t fix         :1; //检修
 N    uint8_t px          :1; //培训
-N    uint8_t             :2;
+N    uint8_t jjzd        :1; //紧急制动 emergency stop
+N	uint8_t             :1; //
 N}TYPE_TMY_KEY_BIT;
 N
 N
@@ -45219,6 +45099,14 @@ N                SetTextValue(0,29,"未触底"); //未触底
 N            }
 N        }
 N        
+N		if( bsp_GetKeyState( KID_K1 ) ) //紧急制动按钮
+N        {
+N            Tmy.Key.jjzd = 0; //
+N        }else //按下
+N        {
+N            Tmy.Key.jjzd = 1; //
+N        }
+N		
 N        if( bsp_GetKeyState( KID_ZERO ) ) //触底检测
 N        {
 N            Tmy.Sensor.bit.bottom = 0; //未触底
@@ -45362,7 +45250,8 @@ N    //uint8_t  key_state, key_state_c;
 N    uint8_t count_init_down;
 N    
 N    uint8_t dg_sta_c;
-N    
+N    uint8_t lg_zdgy = 0;//自动给药抬起标志，不回吸
+N	
 N    MOTOR_Init( 1000 );
 N    key_v = 0;
 N    MOTOR_SetDir( UP );
@@ -45378,21 +45267,18 @@ N    while(1)
 N    {
 N        vTaskDelay(2);
 N		
-N		//key_state = bsp_GetKeyState( KID_SYRINGE );
-N		//key_state_c = key_state;
-N			
 N		key_v = bsp_GetKey();
 N        
 N        switch( key_v ) //
 N		{
-N		    case PEDAL_DOWN : //按下脚踏，电机运行
+N		    case PEDAL_DOWN : //踩下脚踏，电机运行
 X		    case KEY_9_DOWN : 
 N			
 N				timer_pedal_up = 0;
 N		        
 N				if( dg_sta == DG_UP ) //顶杆上升期间
 N		        {   
-N					//自动给药情况下，按下脚踏，停机?
+N					//自动给药情况下，踩下脚踏，不做任何动作，等到抬起再停止
 N					if( Tmy.State.bit.zdgy )
 N					{
 N					    timer_pedal_down = 1;
@@ -45469,59 +45355,91 @@ N		}
 N        
 N		if( dg_sta == DG_UP ) //顶杆上升期间
 N		{
-N			if( timer_pedal_up > DLY_PEDAL_UP_MOTOR_STOP ) //抬起脚踏时间大于 DLY_PEDAL_UP_MOTOR_STOP 秒
-X			if( timer_pedal_up > 2 ) 
+N			// if( timer_pedal_up > DLY_PEDAL_UP_MOTOR_STOP ) //抬起脚踏时间大于 DLY_PEDAL_UP_MOTOR_STOP 秒
+N			// {
+N				// timer_pedal_up = 0;
+N				// Motor.speed = 0; //恢复速度
+N				// if( Tmy.Key.hx )//&& (!Motor.state.bit.dir) )//回吸模式有效 Motor.state.bit.dir
+N				// {
+N					// if(!lg_zdgy) //非自动给药
+N					// {
+N						// lg_zdgy = 0;//自动给药抬起标志，取消
+N						// if( ( Tmy.speed == SLOWEST )   //慢慢速
+N						 // || ( Tmy.speed == SLOW    ) ) //常慢速
+N						// {
+N							// Motor.counter_hx_step = Motor.counter_step - Motor.max_hx_step;
+N							// dg_sta = DG_HX_DOWN;//
+N						// }
+N					// }
+N				// }
+N			// }
+N			//回吸判断
+N			if( ( Tmy.speed == SLOWEST )   //慢慢速
+N			 || ( Tmy.speed == SLOW    ) ) //常慢速
 N			{
-N				timer_pedal_up = 0;
-N				Motor.speed = 0; //恢复速度
-N				   if( Tmy.Key.hx )//&& (!Motor.state.bit.dir) )//回吸模式有效 Motor.state.bit.dir
-N				   {
-N				        if(!Tmy.State.bit.zdgy) //非自动给药
-N    				    {
-N    						if( ( Tmy.speed == SLOW )   //常慢速
-N    						 || ( Tmy.speed == NORMAL ) //中速
-N    						 || ( Tmy.speed == FAST ) ) //快速 
-N    						{
-N    							Motor.counter_hx_step = Motor.counter_step - Motor.max_hx_step;
-N    							//Tmy.state.bit.hx = 1;
-N    							dg_sta = DG_HX_DOWN;//Tmy.work_state = STA_HX_DOWN;
-N    							//MOTOR_SetDir( DOWN );
-N    							//MOTOR_SetSpeed( CYCLE_HX ); //设置电机速度
-N    							//SetTextValue(0,18,"回吸下降");
-N    						}
-N    				    }
-N				   }
+N				if( timer_pedal_up > DLY_PEDAL_UP_MOTOR_STOP ) //抬起脚踏时间大于 DLY_PEDAL_UP_MOTOR_STOP 秒
+X				if( timer_pedal_up > 2 ) 
+N				{
+N					timer_pedal_up = 0;
+N					Motor.speed = 0; //恢复速度
+N					if( Tmy.Key.hx ) //回吸模式有效
+N					{
+N						if(!lg_zdgy) //非自动给药
+N						{
+N							lg_zdgy = 0;//自动给药抬起标志，取消
+N							
+N							//判断回吸距离，此处可判断大于STEP_HX_ENABLE距离才可以回吸，STEP_HX_ENABLE默认0
+N							if( Motor.counter_step > ( Motor.max_hx_step + STEP_HX_ENABLE ) ) //有效距离
+X							if( Motor.counter_step > ( Motor.max_hx_step + 0 ) ) 
+N							{
+N								Motor.counter_hx_step = Motor.counter_step - Motor.max_hx_step; 
+N							}else //判断回吸距离不够的情况，最低触底
+N							{
+N								Motor.counter_hx_step = 0;
+N							}
+N							dg_sta = DG_HX_DOWN;//进入回吸
+N						}
+N					}
+N				}
 N			}
 N			
 N			//自动给药判断
 N			if( ( Tmy.speed == SLOWEST )   //慢慢速
 N			 || ( Tmy.speed == SLOW    ) ) //常慢速
 N			{
-N				if( ( !Tmy.State.bit.zdgy ) && ( timer_pedal_down > TIME_ZDGY_ENABLE ) ) //按下脚踏时间大于TIME_CRUISE_START秒
+N				if( ( !Tmy.State.bit.zdgy ) && ( timer_pedal_down > TIME_ZDGY_ENABLE ) ) //踩下脚踏时间大于TIME_CRUISE_START秒
 X				if( ( !Tmy.State.bit.zdgy ) && ( timer_pedal_down > 5 ) ) 
 N				{
 N					Tmy.State.bit.zdgy = 1; //进入自动给药
 N					SetTextValue(0,26,"自动给药...");
-N					//play_sound('a:/sounds/zdgy.mp3');
-N					PlayMusic("a:/sounds/zdgy.mp3"); //EE 94 41 3A 2F 53 6F 75 6E 64 73 2F 7A 64 67 79 2E 6D 70 33 FF FC FF FF 
-N					//播放语音:即将进入巡航模式
-N					//如果2秒内，抬脚，进入巡航模式
-N					//如果2秒内，没有抬脚，不进入巡航模式
+N					PlayMusic("a:/sounds/zdgy.mp3"); ////播放语音:自动给药
+N					//如果2秒内，抬脚，自动给药
+N					//如果2秒内，没有抬脚，不进自动给药
+N					lg_zdgy = 1;//自动给药抬起标志，不回吸
 N				}
 N				
-N				if( ( Tmy.State.bit.zdgy ) && ( timer_pedal_down > TIME_ZDGY_CANCLE ) ) //按下脚踏时间大于5秒
+N				if( ( Tmy.State.bit.zdgy ) && ( timer_pedal_down > TIME_ZDGY_CANCLE ) ) //踩下脚踏时间大于5秒
 X				if( ( Tmy.State.bit.zdgy ) && ( timer_pedal_down > 7 ) ) 
 N				{
 N					Tmy.State.bit.zdgy = 0;//取消自动给药
 N					timer_pedal_down = 0;
-N					//播放语音:巡航模式取消？
 N					SetTextValue(0,26,"自动给药取消");
-N					//如果2秒内，抬脚，进入巡航模式
-N					//如果2秒内，没有抬脚，不进入巡航模式
+N					//播放语音:自动给药取消xxx
+N					//如果2秒内，抬脚，自动给药
+N					//如果2秒内，没有抬脚，不进自动给药
+N					lg_zdgy = 0;//自动给药抬起标志，取消
 N				}
 N			}
 N		}
-N
+N		
+N		//紧急制动功能有待完善
+N		if( Tmy.Key.jjzd ) //紧急制动
+N		{
+N			MOTOR_Stop();//步进电机停止
+N			Tmy.Motor.state = MOTOR_STOP;//更改步进电机状态
+N			dg_sta = DG_STOP;
+N		}
+N		
 N        switch( dg_sta )
 N        {
 N            case DG_INIT : //上电，参数初始化
@@ -45896,7 +45814,8 @@ N                    dg_sta_c = dg_sta;
 N                    SetTextValue(0,26,"回吸下降...");
 N                }
 N                
-N                if( Motor.counter_step < Motor.counter_hx_step-1 )//到达回吸底部
+N                if( ( Motor.counter_step <= Motor.counter_hx_step )//到达回吸底部
+N								  ||( Motor.counter_step == 0 ) )//触底,此处对触情况底做了限制
 N                {
 N                    MOTOR_Stop();//电机停止
 N                    Motor.counter_hx_step = Motor.counter_step + Motor.max_hx_step;
@@ -46286,7 +46205,7 @@ N	        default : break;
 N	    }
 N		switch( key_v ) //
 N		{
-N		    case PEDAL_DOWN : //按下脚踏，电机运行
+N		    case PEDAL_DOWN : //踩下脚踏，电机运行
 N		        
 N		        timer_pedal_up = 0;
 N		        

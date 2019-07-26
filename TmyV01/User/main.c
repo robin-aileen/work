@@ -259,6 +259,14 @@ static void vTaskSensor(void *pvParameters)
             }
         }
         
+		if( bsp_GetKeyState( KID_K1 ) ) //紧急制动按钮
+        {
+            Tmy.Key.jjzd = 0; //
+        }else //按下
+        {
+            Tmy.Key.jjzd = 1; //
+        }
+		
         if( bsp_GetKeyState( KID_ZERO ) ) //触底检测
         {
             Tmy.Sensor.bit.bottom = 0; //未触底
@@ -397,7 +405,8 @@ static void vTaskMotorCtrl(void *pvParameters)
     uint8_t count_init_down;
     
     uint8_t dg_sta_c;
-    
+    uint8_t lg_zdgy = 0;//自动给药抬起标志，不回吸
+	
     MOTOR_Init( 1000 );
     key_v = 0;
     MOTOR_SetDir( UP );
@@ -412,20 +421,17 @@ static void vTaskMotorCtrl(void *pvParameters)
     {
         vTaskDelay(2);
 		
-		//key_state = bsp_GetKeyState( KID_SYRINGE );
-		//key_state_c = key_state;
-			
 		key_v = bsp_GetKey();
         
         switch( key_v ) //
 		{
-		    case PEDAL_DOWN : //按下脚踏，电机运行
+		    case PEDAL_DOWN : //踩下脚踏，电机运行
 			
 				timer_pedal_up = 0;
 		        
 				if( dg_sta == DG_UP ) //顶杆上升期间
 		        {   
-					//自动给药情况下，按下脚踏，停机?
+					//自动给药情况下，踩下脚踏，不做任何动作，等到抬起再停止
 					if( Tmy.State.bit.zdgy )
 					{
 					    timer_pedal_down = 1;
@@ -501,58 +507,87 @@ static void vTaskMotorCtrl(void *pvParameters)
         
 		if( dg_sta == DG_UP ) //顶杆上升期间
 		{
-			if( timer_pedal_up > DLY_PEDAL_UP_MOTOR_STOP ) //抬起脚踏时间大于 DLY_PEDAL_UP_MOTOR_STOP 秒
+			// if( timer_pedal_up > DLY_PEDAL_UP_MOTOR_STOP ) //抬起脚踏时间大于 DLY_PEDAL_UP_MOTOR_STOP 秒
+			// {
+				// timer_pedal_up = 0;
+				// Motor.speed = 0; //恢复速度
+				// if( Tmy.Key.hx )//&& (!Motor.state.bit.dir) )//回吸模式有效 Motor.state.bit.dir
+				// {
+					// if(!lg_zdgy) //非自动给药
+					// {
+						// lg_zdgy = 0;//自动给药抬起标志，取消
+						// if( ( Tmy.speed == SLOWEST )   //慢慢速
+						 // || ( Tmy.speed == SLOW    ) ) //常慢速
+						// {
+							// Motor.counter_hx_step = Motor.counter_step - Motor.max_hx_step;
+							// dg_sta = DG_HX_DOWN;//
+						// }
+					// }
+				// }
+			// }
+			//回吸判断
+			if( ( Tmy.speed == SLOWEST )   //慢慢速
+			 || ( Tmy.speed == SLOW    ) ) //常慢速
 			{
-				timer_pedal_up = 0;
-				Motor.speed = 0; //恢复速度
-				   if( Tmy.Key.hx )//&& (!Motor.state.bit.dir) )//回吸模式有效 Motor.state.bit.dir
-				   {
-				        if(!Tmy.State.bit.zdgy) //非自动给药
-    				    {
-//    						if( ( Tmy.speed == SLOW )   //常慢速
-//    						 || ( Tmy.speed == NORMAL ) //中速
-//    						 || ( Tmy.speed == FAST ) ) //快速 
-                            if( ( Tmy.speed == SLOWEST )   //慢慢速
-			                 || ( Tmy.speed == SLOW    ) ) //常慢速
-    						{
-    							Motor.counter_hx_step = Motor.counter_step - Motor.max_hx_step;
-    							//Tmy.state.bit.hx = 1;
-    							dg_sta = DG_HX_DOWN;//Tmy.work_state = STA_HX_DOWN;
-    							//MOTOR_SetDir( DOWN );
-    							//MOTOR_SetSpeed( CYCLE_HX ); //设置电机速度
-    							//SetTextValue(0,18,"回吸下降");
-    						}
-    				    }
-				   }
+				if( timer_pedal_up > DLY_PEDAL_UP_MOTOR_STOP ) //抬起脚踏时间大于 DLY_PEDAL_UP_MOTOR_STOP 秒
+				{
+					timer_pedal_up = 0;
+					Motor.speed = 0; //恢复速度
+					if( Tmy.Key.hx ) //回吸模式有效
+					{
+						if(!lg_zdgy) //非自动给药
+						{
+							lg_zdgy = 0;//自动给药抬起标志，取消
+							
+							//判断回吸距离，此处可判断大于STEP_HX_ENABLE距离才可以回吸，STEP_HX_ENABLE默认0
+							if( Motor.counter_step > ( Motor.max_hx_step + STEP_HX_ENABLE ) ) //有效距离
+							{
+								Motor.counter_hx_step = Motor.counter_step - Motor.max_hx_step; 
+							}else //判断回吸距离不够的情况，最低触底
+							{
+								Motor.counter_hx_step = 0;
+							}
+							dg_sta = DG_HX_DOWN;//进入回吸
+						}
+					}
+				}
 			}
 			
 			//自动给药判断
 			if( ( Tmy.speed == SLOWEST )   //慢慢速
 			 || ( Tmy.speed == SLOW    ) ) //常慢速
 			{
-				if( ( !Tmy.State.bit.zdgy ) && ( timer_pedal_down > TIME_ZDGY_ENABLE ) ) //按下脚踏时间大于TIME_CRUISE_START秒
+				if( ( !Tmy.State.bit.zdgy ) && ( timer_pedal_down > TIME_ZDGY_ENABLE ) ) //踩下脚踏时间大于TIME_CRUISE_START秒
 				{
 					Tmy.State.bit.zdgy = 1; //进入自动给药
 					SetTextValue(0,26,"自动给药...");
-					//play_sound('a:/sounds/zdgy.mp3');
-					PlayMusic("a:/sounds/zdgy.mp3"); //EE 94 41 3A 2F 53 6F 75 6E 64 73 2F 7A 64 67 79 2E 6D 70 33 FF FC FF FF 
-					//播放语音:即将进入巡航模式
-					//如果2秒内，抬脚，进入巡航模式
-					//如果2秒内，没有抬脚，不进入巡航模式
+					PlayMusic("a:/sounds/zdgy.mp3"); ////播放语音:自动给药
+					//如果2秒内，抬脚，自动给药
+					//如果2秒内，没有抬脚，不进自动给药
+					lg_zdgy = 1;//自动给药抬起标志，不回吸
 				}
 				
-				if( ( Tmy.State.bit.zdgy ) && ( timer_pedal_down > TIME_ZDGY_CANCLE ) ) //按下脚踏时间大于5秒
+				if( ( Tmy.State.bit.zdgy ) && ( timer_pedal_down > TIME_ZDGY_CANCLE ) ) //踩下脚踏时间大于5秒
 				{
 					Tmy.State.bit.zdgy = 0;//取消自动给药
 					timer_pedal_down = 0;
-					//播放语音:巡航模式取消？
 					SetTextValue(0,26,"自动给药取消");
-					//如果2秒内，抬脚，进入巡航模式
-					//如果2秒内，没有抬脚，不进入巡航模式
+					//播放语音:自动给药取消xxx
+					//如果2秒内，抬脚，自动给药
+					//如果2秒内，没有抬脚，不进自动给药
+					lg_zdgy = 0;//自动给药抬起标志，取消
 				}
 			}
 		}
-
+		
+		//紧急制动功能有待完善
+		if( Tmy.Key.jjzd ) //紧急制动
+		{
+			MOTOR_Stop();//步进电机停止
+			Tmy.Motor.state = MOTOR_STOP;//更改步进电机状态
+			dg_sta = DG_STOP;
+		}
+		
         switch( dg_sta )
         {
             case DG_INIT : //上电，参数初始化
@@ -907,7 +942,8 @@ static void vTaskMotorCtrl(void *pvParameters)
                     SetTextValue(0,26,"回吸下降...");
                 }
                 
-                if( Motor.counter_step < Motor.counter_hx_step-1 )//到达回吸底部
+                if( ( Motor.counter_step <= Motor.counter_hx_step )//到达回吸底部
+								  ||( Motor.counter_step == 0 ) )//触底,此处对触情况底做了限制
                 {
                     MOTOR_Stop();//电机停止
                     Motor.counter_hx_step = Motor.counter_step + Motor.max_hx_step;
@@ -1285,7 +1321,7 @@ static void vTaskMotorCtrl2(void *pvParameters)
 	    }
 		switch( key_v ) //
 		{
-		    case PEDAL_DOWN : //按下脚踏，电机运行
+		    case PEDAL_DOWN : //踩下脚踏，电机运行
 		        
 		        timer_pedal_up = 0;
 		        
