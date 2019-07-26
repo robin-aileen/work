@@ -120,8 +120,8 @@ N/* stddef.h: ANSI 'C' (X3J11 Oct 88) library header, section 4.1.4 */
 N
 N/* Copyright (C) ARM Ltd., 1999
 N * All rights reserved
-N * RCS $Revision: 185525 $
-N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
+N * RCS $Revision$
+N * Checkin $Date$
 N * Revising $Author: agrant $
 N */
 N
@@ -137,7 +137,7 @@ N */
 N
 N#ifndef __stddef_h
 N#define __stddef_h
-N#define __ARMCLIB_VERSION 5050106
+N#define __ARMCLIB_VERSION 5060037
 N
 N  #ifndef __STDDEF_DECLS
 N  #define __STDDEF_DECLS
@@ -214,6 +214,11 @@ N  /* EDG uses __INTADDR__ to avoid errors when strict */
 N  #define offsetof(t, memb) ((__CLIBNS size_t)__INTADDR__(&(((t *)0)->memb)))
 N#endif
 N
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 201112L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
+X#if !0L || (1L && 201112L <= 199409L) || (0L && 201103L <= __cplusplus)
+N  typedef long double max_align_t;
+N#endif
+N
 N    #ifdef __cplusplus
 S         }  /* extern "C" */
 S      }  /* namespace std */
@@ -225,6 +230,9 @@ N  #ifdef __cplusplus
 S    #ifndef __STDDEF_NO_EXPORTS
 S      using ::std::size_t;
 S      using ::std::ptrdiff_t;
+S      #if !defined(__STRICT_ANSI__) || (defined(__cplusplus) && 201103L <= __cplusplus)
+S        using ::std::max_align_t;
+S      #endif
 S    #endif 
 N  #endif /* __cplusplus */
 N
@@ -253,14 +261,14 @@ N/* Copyright (C) ARM Ltd., 1999,2014 */
 N/* All rights reserved */
 N
 N/*
-N * RCS $Revision: 185525 $
-N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
+N * RCS $Revision$
+N * Checkin $Date$
 N * Revising $Author: agrant $
 N */
 N
 N#ifndef __stdint_h
 N#define __stdint_h
-N#define __ARMCLIB_VERSION 5050106
+N#define __ARMCLIB_VERSION 5060037
 N
 N  #ifdef __INT64_TYPE__
 S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
@@ -452,9 +460,9 @@ N
 N    /* maximum value of pointer-holding unsigned integer type */
 N#if __sizeof_ptr == 8
 X#if 4 == 8
-S#define UINTPTR_MAX INT64_MAX
+S#define UINTPTR_MAX UINT64_MAX
 N#else
-N#define UINTPTR_MAX INT32_MAX
+N#define UINTPTR_MAX UINT32_MAX
 N#endif
 N
 N    /* 7.18.2.5 */
@@ -5821,7 +5829,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5050106 < 400677)
+X#if (5060750 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -6449,7 +6457,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5050106 < 400677)
+X#if (5060750 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -35047,8 +35055,8 @@ N/* Copyright (C) Codemist Ltd., 1988-1993                       */
 N/* Copyright 1991-1998 ARM Limited. All rights reserved.        */
 N
 N/*
-N * RCS $Revision: 185531 $
-N * Checkin $Date: 2014-05-29 15:16:06 +0100 (Thu, 29 May 2014) $
+N * RCS $Revision$
+N * Checkin $Date$
 N * Revising $Author: sdouglas $
 N */
 N
@@ -35061,7 +35069,7 @@ N */
 N
 N#ifndef __stdio_h
 N#define __stdio_h
-N#define __ARMCLIB_VERSION 5050106
+N#define __ARMCLIB_VERSION 5060037
 N
 N/*
 N * Depending on compiler version __int64 or __INT64_TYPE__ should be defined.
@@ -35498,8 +35506,14 @@ N    * is equivalent to sprintf, but does not support floating-point formats.
 N    * You can use instead of sprintf to improve code size.
 N    * Returns: as sprintf.
 N    */
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
-X#if !0L || (1L && 199901L <= 199409L)
+N
+N#pragma __printf_args
+Nextern _ARMABI int __ARM_snprintf(char * __restrict /*s*/, size_t /*n*/,
+Xextern __declspec(__nothrow) int __ARM_snprintf(char * __restrict  , size_t  ,
+N                     const char * __restrict /*format*/, ...) __attribute__((__nonnull__(3)));
+N
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
+X#if !0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
 N#pragma __printf_args
 Nextern _ARMABI int snprintf(char * __restrict /*s*/, size_t /*n*/,
 Xextern __declspec(__nothrow) int snprintf(char * __restrict  , size_t  ,
@@ -35618,8 +35632,8 @@ N    * is equivalent to sscanf, but does not support floating-point formats.
 N    * You can use instead of sscanf to improve code size.
 N    * Returns: as sscanf.
 N    */
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
-X#if !0L || (1L && 199901L <= 199409L)
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
+X#if !0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
 N/* C99 additions */
 Nextern _ARMABI int vfscanf(FILE * __restrict /*stream*/, const char * __restrict /*format*/, __va_list) __attribute__((__nonnull__(1,2)));
 Xextern __declspec(__nothrow) int vfscanf(FILE * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
@@ -35634,6 +35648,8 @@ Nextern _ARMABI int _vscanf(const char * __restrict /*format*/, __va_list) __att
 Xextern __declspec(__nothrow) int _vscanf(const char * __restrict  , __va_list) __attribute__((__nonnull__(1)));
 Nextern _ARMABI int _vsscanf(const char * __restrict /*s*/, const char * __restrict /*format*/, __va_list) __attribute__((__nonnull__(1,2)));
 Xextern __declspec(__nothrow) int _vsscanf(const char * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
+Nextern _ARMABI int __ARM_vsscanf(const char * __restrict /*s*/, const char * __restrict /*format*/, __va_list) __attribute__((__nonnull__(1,2)));
+Xextern __declspec(__nothrow) int __ARM_vsscanf(const char * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
 N
 Nextern _ARMABI int vprintf(const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(1)));
 Xextern __declspec(__nothrow) int vprintf(const char * __restrict  , __va_list  ) __attribute__((__nonnull__(1)));
@@ -35673,8 +35689,11 @@ N    * va_end function.
 N    * Returns: the number of characters written in the array, not counting the
 N    *          terminating null character.
 N    */
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
-X#if !0L || (1L && 199901L <= 199409L)
+Nextern _ARMABI int __ARM_vsnprintf(char * __restrict /*s*/, size_t /*n*/,
+Xextern __declspec(__nothrow) int __ARM_vsnprintf(char * __restrict  , size_t  ,
+N                     const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(3)));
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
+X#if !0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
 Nextern _ARMABI int vsnprintf(char * __restrict /*s*/, size_t /*n*/,
 Xextern __declspec(__nothrow) int vsnprintf(char * __restrict  , size_t  ,
 N                     const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(3)));
@@ -35712,6 +35731,30 @@ N    * is equivalent to vsnprintf, but does not support floating-point formats.
 N    * You can use instead of vsnprintf to improve code size.
 N    * Returns: as vsnprintf.
 N    */
+N#if !defined(__STRICT_ANSI__)
+X#if !0L
+N#pragma __printf_args
+Nextern _ARMABI int asprintf(char ** /*strp*/, const char * __restrict /*format*/, ...) __attribute__((__nonnull__(2)));
+Xextern __declspec(__nothrow) int asprintf(char **  , const char * __restrict  , ...) __attribute__((__nonnull__(2)));
+Nextern _ARMABI int vasprintf(char ** /*strp*/, const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(2)));
+Xextern __declspec(__nothrow) int vasprintf(char **  , const char * __restrict  , __va_list  ) __attribute__((__nonnull__(2)));
+N#endif
+N#pragma __printf_args
+Nextern _ARMABI int __ARM_asprintf(char ** /*strp*/, const char * __restrict /*format*/, ...) __attribute__((__nonnull__(2)));
+Xextern __declspec(__nothrow) int __ARM_asprintf(char **  , const char * __restrict  , ...) __attribute__((__nonnull__(2)));
+Nextern _ARMABI int __ARM_vasprintf(char ** /*strp*/, const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(2)));
+Xextern __declspec(__nothrow) int __ARM_vasprintf(char **  , const char * __restrict  , __va_list  ) __attribute__((__nonnull__(2)));
+N   /*
+N    * dynamically allocates a buffer of the right size for the
+N    * formatted string, and returns it in (*strp). Formal return value
+N    * is the same as any other printf variant, except that it returns
+N    * -1 if the buffer could not be allocated.
+N    *
+N    * (The functions with __ARM_ prefixed names are identical to the
+N    * ones without, but are available in all compilation modes without
+N    * violating user namespace.)
+N    */
+N
 Nextern _ARMABI int fgetc(FILE * /*stream*/) __attribute__((__nonnull__(1)));
 Xextern __declspec(__nothrow) int fgetc(FILE *  ) __attribute__((__nonnull__(1)));
 N   /*
@@ -36052,7 +36095,7 @@ S    using ::std::printf;
 S    using ::std::_printf;
 S    using ::std::sprintf;
 S    using ::std::_sprintf;
-S    #if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+S    #if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
 S      using ::std::snprintf;
 S      using ::std::vsnprintf;
 S      using ::std::vfscanf;
@@ -36061,6 +36104,15 @@ S      using ::std::vsscanf;
 S    #endif
 S    using ::std::_snprintf;
 S    using ::std::_vsnprintf;
+S#if !defined(__STRICT_ANSI__)
+S    using ::std::asprintf;
+S    using ::std::vasprintf;
+S#endif
+S    using ::std::__ARM_asprintf;
+S    using ::std::__ARM_vasprintf;
+S    using ::std::__ARM_vsnprintf;
+S    using ::std::__ARM_snprintf;
+S    using ::std::__ARM_vsscanf;
 S    using ::std::fscanf;
 S    using ::std::_fscanf;
 S    using ::std::scanf;
@@ -36117,8 +36169,8 @@ N/* Copyright 1991-1993 ARM Limited. All rights reserved.          */
 N/* version 0.04 */
 N
 N/*
-N * RCS $Revision: 185525 $
-N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
+N * RCS $Revision$
+N * Checkin $Date$
 N */
 N
 N/*
@@ -36132,7 +36184,7 @@ N */
 N
 N#ifndef __string_h
 N#define __string_h
-N#define __ARMCLIB_VERSION 5050106
+N#define __ARMCLIB_VERSION 5060037
 N
 N#define _ARMABI __declspec(__nothrow)
 N
@@ -36666,8 +36718,8 @@ N/* stdlib.h: ANSI draft (X3J11 May 88) library header, section 4.10 */
 N/* Copyright (C) Codemist Ltd., 1988-1993.                          */
 N/* Copyright 1991-1998,2014 ARM Limited. All rights reserved.       */
 N/*
-N * RCS $Revision: 185525 $
-N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
+N * RCS $Revision$
+N * Checkin $Date$
 N * Revising $Author: agrant $
 N */
 N 
@@ -36678,7 +36730,7 @@ N */
 N
 N#ifndef __stdlib_h
 N#define __stdlib_h
-N#define __ARMCLIB_VERSION 5050106
+N#define __ARMCLIB_VERSION 5060037
 N
 N#if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
 X#if 0L || (1L && !0L)
@@ -36702,8 +36754,8 @@ N   * Some of these declarations are new in C99.  To access them in C++
 N   * you can use -D__USE_C99_STDLIB (or -D__USE_C99ALL).
 N   */
 N  #ifndef __USE_C99_STDLIB
-N    #if defined(__USE_C99_ALL) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
-X    #if 0L || (1L && 199901L <= 199409L)
+N    #if defined(__USE_C99_ALL) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
+X    #if 0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
 S      #define __USE_C99_STDLIB 1
 N    #endif
 N  #endif
@@ -39852,7 +39904,7 @@ N/***************************** °²¸»À³µç×Ó www.armfly.com (END OF FILE) ********
 L 3 "..\..\User\hx711\HX711.c" 2
 N
 N/*Include---------------------------*/
-N#include "bsp.h"//#include"STM32f10x_lib.h"                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Í·ï¿½Ä¼ï¿½
+N#include "bsp.h"//#include"STM32f10x_lib.h"                //°üº¬ËùÓÐµÄÍ·ÎÄ¼þ
 L 1 "..\..\User\bsp\bsp.h" 1
 N/*
 N*********************************************************************************************************
@@ -40010,7 +40062,7 @@ N#include <stdio.h>
 N
 N#define delay_us( us ) bsp_DelayUS( us )
 N
-N//----------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½--------------------
+N//----------------º¯ÊýÉùÃ÷--------------------
 N//void Delay_MS(u16 dly);
 N//void delay_us(u16 dly1);
 N//void RCC_Configuration(void);
@@ -40030,7 +40082,7 @@ N//    #IFdef DEBUG
 N//    debug();
 N//    #endif
 N
-N//    //------------ï¿½ï¿½Ê¼ï¿½ï¿½------------
+N//    //------------³õÊ¼»¯------------
 N//    RCC_Configuration();
 N//    GPIO_Configuration();
 N//    USART_Configuration( );
@@ -40098,7 +40150,7 @@ X    GPIO_Init(((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0C00)),
 N
 N}
 N
-N//unsigned long HX711_Read(void)  //ï¿½ï¿½HX711Ð¾Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿? 
+N//unsigned long HX711_Read(void)  //¶ÁHX711Ð¾Æ¬Êä³öµÄÊý¾Ý¡£ 
 N//{ 
 N//    unsigned long val = 0; 
 N//    unsigned char i = 0; 
@@ -40108,7 +40160,7 @@ N//
 N//    HX711_DATA_1;   //DOUT=1 
 N//    HX711_SCK_0;    //SCK=0
 N//    
-N//    while( HX711_DATA_CHK ); //ï¿½È´ï¿½DOUT=0  
+N//    while( HX711_DATA_CHK ); //µÈ´ýDOUT=0  
 N//    delay_us(1); 
 N//    for(i=0;i<24;i++) 
 N//    { 
@@ -40122,7 +40174,7 @@ N//       //delay_us(1);
 N//    } 
 N//    HX711_SCK_1; 
 N//    delay_us(1); 
-N//    val=val^0x800000;//ï¿½ï¿½25ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+N//    val=val^0x800000;//µÚ25¸öÂö³åÏÂ½µÑØÀ´Ê±£¬×ª»»Êý¾Ý
 N//    HX711_SCK_0; //
 N//    //HX711_DATA_1; 
 N//    delay_us(1);  
@@ -40130,7 +40182,7 @@ N//
 N//    return val;
 N//}   
 N
-N//unsigned long HX711_Read_B32(void)  //ï¿½ï¿½HX711Ð¾Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿? 
+N//unsigned long HX711_Read_B32(void)  //¶ÁHX711Ð¾Æ¬Êä³öµÄÊý¾Ý¡£ 
 Nunsigned long HX711_Read(void)
 N{ 
 N    unsigned long val = 0; 
@@ -40143,7 +40195,7 @@ X    GPIO_SetBits( ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0C0
 N    HX711_SCK_0;    //SCK=0
 X    GPIO_ResetBits( ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0C00)), ((uint16_t)0x0100) );    
 N    
-N    while( HX711_DATA_CHK ); //ï¿½È´ï¿½DOUT=0  
+N    while( HX711_DATA_CHK ); //µÈ´ýDOUT=0  
 X    while( GPIO_ReadInputDataBit( ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0C00)), ((uint16_t)0x0200) ) ); 
 N    delay_us(1); 
 X    bsp_DelayUS( 1 ); 
@@ -40172,7 +40224,7 @@ N    HX711_SCK_1;
 X    GPIO_SetBits( ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0C00)), ((uint16_t)0x0100) ); 
 N    delay_us(1); 
 X    bsp_DelayUS( 1 ); 
-N    val=val^0x800000;//ï¿½ï¿½25ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+N    val=val^0x800000;//µÚ25¸öÂö³åÏÂ½µÑØÀ´Ê±£¬×ª»»Êý¾Ý
 N    HX711_SCK_0; //
 X    GPIO_ResetBits( ((GPIO_TypeDef *) ((((uint32_t)0x40000000) + 0x10000) + 0x0C00)), ((uint16_t)0x0100) ); 
 N    //HX711_DATA_1; 
@@ -40182,7 +40234,7 @@ N
 N    return val;
 N}  
 N
-N//unsigned long Read_HX711(void)  //ï¿½ï¿½HX711Ð¾Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿? 
+N//unsigned long Read_HX711(void)  //¶ÁHX711Ð¾Æ¬Êä³öµÄÊý¾Ý¡£ 
 N//{ 
 N//    unsigned long val = 0; 
 N//    unsigned char i = 0; 
@@ -40190,7 +40242,7 @@ N//
 N//    GPIO_SetBits(GPIOB,GPIO_Pin_11);    //DOUT=1 
 N//    GPIO_ResetBits(GPIOB,GPIO_Pin_12);    //SCK=0
 N//    
-N//    while(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11));   //ï¿½È´ï¿½DOUT=0  
+N//    while(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11));   //µÈ´ýDOUT=0  
 N//    delay_us(1); 
 N//    for(i=0;i<24;i++) 
 N//    { 
@@ -40218,10 +40270,10 @@ N//* Return         : None
 N//*******************************************************************************/
 N//void RCC_Configuration(void)
 N//{
-N//        //----------Ê¹ï¿½ï¿½ï¿½â²¿RCï¿½ï¿½ï¿½ï¿½-----------
-N//        RCC_DeInit();                        //ï¿½ï¿½Ê¼ï¿½ï¿½ÎªÈ±Ê¡Öµ
-N//        RCC_HSEConfig(RCC_HSE_ON);        //Ê¹ï¿½ï¿½ï¿½â²¿ï¿½Ä¸ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ 
-N//        while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);        //ï¿½È´ï¿½ï¿½â²¿ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ê¹ï¿½Ü¾ï¿½ï¿½ï¿½
+N//        //----------Ê¹ÓÃÍâ²¿RC¾§Õñ-----------
+N//        RCC_DeInit();                        //³õÊ¼»¯ÎªÈ±Ê¡Öµ
+N//        RCC_HSEConfig(RCC_HSE_ON);        //Ê¹ÄÜÍâ²¿µÄ¸ßËÙÊ±ÖÓ 
+N//        while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);        //µÈ´ýÍâ²¿¸ßËÙÊ±ÖÓÊ¹ÄÜ¾ÍÐ÷
 N//        FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);   
 N//    FLASH_SetLatency(FLASH_Latency_2); 
 N//        RCC_HCLKConfig(RCC_SYSCLK_Div1);                //HCLK = SYSCLK
@@ -40233,9 +40285,9 @@ N//
 N//        while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);        //Wait till PLLCLK is ready
 N//    RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);        //Select PLL as system clock
 N//        while(RCC_GetSYSCLKSource()!=0x08);                //Wait till PLL is used as system clock source        
-N//        //---------ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½--------------------
-N//        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB,ENABLE);        //Ê¹ï¿½ï¿½APB2ï¿½ï¿½ï¿½ï¿½ï¿½GPIOAï¿½ï¿½Ê±ï¿½ï¿½        
-N//                  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+N//        //---------´ò¿ªÏàÓ¦ÍâÉèÊ±ÖÓ--------------------
+N//        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB,ENABLE);        //Ê¹ÄÜAPB2ÍâÉèµÄGPIOAµÄÊ±ÖÓ        
+N//                  //¿ªÆô´®¿ÚÊ±ÖÓ
 N//    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 N//
 N//                 

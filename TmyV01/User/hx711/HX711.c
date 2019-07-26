@@ -2,12 +2,12 @@
 #include "bsp.h"
 
 /*Include---------------------------*/
-#include "bsp.h"//#include"STM32f10x_lib.h"                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Í·ï¿½Ä¼ï¿½
+#include "bsp.h"//#include"STM32f10x_lib.h"                //°üº¬ËùÓÐµÄÍ·ÎÄ¼þ
 #include <stdio.h> 
 
 #define delay_us( us ) bsp_DelayUS( us )
 
-//----------------ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½--------------------
+//----------------º¯ÊýÉùÃ÷--------------------
 //void Delay_MS(u16 dly);
 //void delay_us(u16 dly1);
 //void RCC_Configuration(void);
@@ -27,7 +27,7 @@
 //    debug();
 //    #endif
 
-//    //------------ï¿½ï¿½Ê¼ï¿½ï¿½------------
+//    //------------³õÊ¼»¯------------
 //    RCC_Configuration();
 //    GPIO_Configuration();
 //    USART_Configuration( );
@@ -91,7 +91,7 @@ void HX711_Init( void )
 
 }
 
-//unsigned long HX711_Read(void)  //ï¿½ï¿½HX711Ð¾Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿? 
+//unsigned long HX711_Read(void)  //¶ÁHX711Ð¾Æ¬Êä³öµÄÊý¾Ý¡£ 
 //{ 
 //    unsigned long val = 0; 
 //    unsigned char i = 0; 
@@ -101,7 +101,7 @@ void HX711_Init( void )
 //    HX711_DATA_1;   //DOUT=1 
 //    HX711_SCK_0;    //SCK=0
 //    
-//    while( HX711_DATA_CHK ); //ï¿½È´ï¿½DOUT=0  
+//    while( HX711_DATA_CHK ); //µÈ´ýDOUT=0  
 //    delay_us(1); 
 //    for(i=0;i<24;i++) 
 //    { 
@@ -115,7 +115,7 @@ void HX711_Init( void )
 //    } 
 //    HX711_SCK_1; 
 //    delay_us(1); 
-//    val=val^0x800000;//ï¿½ï¿½25ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//    val=val^0x800000;//µÚ25¸öÂö³åÏÂ½µÑØÀ´Ê±£¬×ª»»Êý¾Ý
 //    HX711_SCK_0; //
 //    //HX711_DATA_1; 
 //    delay_us(1);  
@@ -123,7 +123,7 @@ void HX711_Init( void )
 //    return val;
 //}   
 
-//unsigned long HX711_Read_B32(void)  //ï¿½ï¿½HX711Ð¾Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿? 
+//unsigned long HX711_Read_B32(void)  //¶ÁHX711Ð¾Æ¬Êä³öµÄÊý¾Ý¡£ 
 unsigned long HX711_Read(void)
 { 
     unsigned long val = 0; 
@@ -134,7 +134,7 @@ unsigned long HX711_Read(void)
     HX711_DATA_1;   //DOUT=1 
     HX711_SCK_0;    //SCK=0
     
-    while( HX711_DATA_CHK ); //ï¿½È´ï¿½DOUT=0  
+    while( HX711_DATA_CHK ); //µÈ´ýDOUT=0  
     delay_us(1); 
     for(i=0;i<24;i++) 
     { 
@@ -152,7 +152,7 @@ unsigned long HX711_Read(void)
     delay_us(1); 
     HX711_SCK_1; 
     delay_us(1); 
-    val=val^0x800000;//ï¿½ï¿½25ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    val=val^0x800000;//µÚ25¸öÂö³åÏÂ½µÑØÀ´Ê±£¬×ª»»Êý¾Ý
     HX711_SCK_0; //
     //HX711_DATA_1; 
     delay_us(1);  
@@ -160,7 +160,7 @@ unsigned long HX711_Read(void)
     return val;
 }  
 
-//unsigned long Read_HX711(void)  //ï¿½ï¿½HX711Ð¾Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¡ï¿? 
+//unsigned long Read_HX711(void)  //¶ÁHX711Ð¾Æ¬Êä³öµÄÊý¾Ý¡£ 
 //{ 
 //    unsigned long val = 0; 
 //    unsigned char i = 0; 
@@ -168,7 +168,7 @@ unsigned long HX711_Read(void)
 //    GPIO_SetBits(GPIOB,GPIO_Pin_11);    //DOUT=1 
 //    GPIO_ResetBits(GPIOB,GPIO_Pin_12);    //SCK=0
 //    
-//    while(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11));   //ï¿½È´ï¿½DOUT=0  
+//    while(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11));   //µÈ´ýDOUT=0  
 //    delay_us(1); 
 //    for(i=0;i<24;i++) 
 //    { 
@@ -196,10 +196,10 @@ unsigned long HX711_Read(void)
 //*******************************************************************************/
 //void RCC_Configuration(void)
 //{
-//        //----------Ê¹ï¿½ï¿½ï¿½â²¿RCï¿½ï¿½ï¿½ï¿½-----------
-//        RCC_DeInit();                        //ï¿½ï¿½Ê¼ï¿½ï¿½ÎªÈ±Ê¡Öµ
-//        RCC_HSEConfig(RCC_HSE_ON);        //Ê¹ï¿½ï¿½ï¿½â²¿ï¿½Ä¸ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ 
-//        while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);        //ï¿½È´ï¿½ï¿½â²¿ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ê¹ï¿½Ü¾ï¿½ï¿½ï¿½
+//        //----------Ê¹ÓÃÍâ²¿RC¾§Õñ-----------
+//        RCC_DeInit();                        //³õÊ¼»¯ÎªÈ±Ê¡Öµ
+//        RCC_HSEConfig(RCC_HSE_ON);        //Ê¹ÄÜÍâ²¿µÄ¸ßËÙÊ±ÖÓ 
+//        while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);        //µÈ´ýÍâ²¿¸ßËÙÊ±ÖÓÊ¹ÄÜ¾ÍÐ÷
 //        FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);   
 //    FLASH_SetLatency(FLASH_Latency_2); 
 //        RCC_HCLKConfig(RCC_SYSCLK_Div1);                //HCLK = SYSCLK
@@ -211,9 +211,9 @@ unsigned long HX711_Read(void)
 //        while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);        //Wait till PLLCLK is ready
 //    RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);        //Select PLL as system clock
 //        while(RCC_GetSYSCLKSource()!=0x08);                //Wait till PLL is used as system clock source        
-//        //---------ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½--------------------
-//        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB,ENABLE);        //Ê¹ï¿½ï¿½APB2ï¿½ï¿½ï¿½ï¿½ï¿½GPIOAï¿½ï¿½Ê±ï¿½ï¿½        
-//                  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+//        //---------´ò¿ªÏàÓ¦ÍâÉèÊ±ÖÓ--------------------
+//        RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB,ENABLE);        //Ê¹ÄÜAPB2ÍâÉèµÄGPIOAµÄÊ±ÖÓ        
+//                  //¿ªÆô´®¿ÚÊ±ÖÓ
 //    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
 //
 //                 

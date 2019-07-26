@@ -230,6 +230,7 @@ int main(void)
 */
 static void vTaskSensor(void *pvParameters)
 {
+	uint8_t tem8 = 0;
 	
 //    SoftWdtInit( vTaskSensor_ID, 10 );
     
@@ -238,12 +239,25 @@ static void vTaskSensor(void *pvParameters)
     {
 //        SoftWdtFed( vTaskSensor_ID );
         
-        vTaskDelay( pdMS_TO_TICKS(1000) );//vTaskDelay( 2 );
+        //vTaskDelay( pdMS_TO_TICKS(1000) );//
+        vTaskDelay( 2 );
         
         ADC1_GetV();
-        Tmy.pressure = HX711_Read();
+        //Tmy.pressure = HX711_Read();
         
         //bsp_KeyScan();
+        if( tem8 != Tmy.Sensor.bit.bottom )
+        {
+            tem8 = Tmy.Sensor.bit.bottom;
+            
+            if( Tmy.Sensor.bit.bottom ) //触底检测
+            {
+                SetTextValue(0,29,"已触底"); //已触底
+            }else
+            {
+                SetTextValue(0,29,"未触底"); //未触底
+            }
+        }
         
         if( bsp_GetKeyState( KID_ZERO ) ) //触底检测
         {
@@ -262,16 +276,16 @@ static void vTaskSensor(void *pvParameters)
             Tmy.Sensor.bit.top = 0; //未触顶
         }
         
-        if( Tmy.State.bit.init ) //初始化完成
-        {
-            if( Motor.counter_step == 0 )//触低底检测
-            {
-                Tmy.Sensor.bit.bottom = 1; //已触底
-            }else
-            {
-                Tmy.Sensor.bit.bottom = 0; //未触底
-            }
-        }
+//        if( Tmy.State.bit.init ) //初始化完成
+//        {
+//            if( Motor.counter_step == 0 )//触低底检测
+//            {
+//                Tmy.Sensor.bit.bottom = 1; //已触底
+//            }else
+//            {
+//                Tmy.Sensor.bit.bottom = 0; //未触底
+//            }
+//        }
         
         if( bsp_GetKeyState( KID_SYRINGE ) ) //注射器类型
         {
@@ -398,8 +412,6 @@ static void vTaskMotorCtrl(void *pvParameters)
     {
         vTaskDelay(2);
 		
-        bsp_KeyScan();
-        
 		//key_state = bsp_GetKeyState( KID_SYRINGE );
 		//key_state_c = key_state;
 			
@@ -495,22 +507,28 @@ static void vTaskMotorCtrl(void *pvParameters)
 				Motor.speed = 0; //恢复速度
 				   if( Tmy.Key.hx )//&& (!Motor.state.bit.dir) )//回吸模式有效 Motor.state.bit.dir
 				   {
-						if( ( Tmy.speed == SLOW )   //常慢速
-						 || ( Tmy.speed == NORMAL ) //中速
-						 || ( Tmy.speed == FAST ) ) //快速 
-						{
-							Motor.counter_hx_step = Motor.counter_step - Motor.max_hx_step;
-							//Tmy.state.bit.hx = 1;
-							dg_sta = DG_HX_DOWN;//Tmy.work_state = STA_HX_DOWN;
-							//MOTOR_SetDir( DOWN );
-							//MOTOR_SetSpeed( CYCLE_HX ); //设置电机速度
-							//SetTextValue(0,18,"回吸下降");
-						}
+				        if(!Tmy.State.bit.zdgy) //非自动给药
+    				    {
+//    						if( ( Tmy.speed == SLOW )   //常慢速
+//    						 || ( Tmy.speed == NORMAL ) //中速
+//    						 || ( Tmy.speed == FAST ) ) //快速 
+                            if( ( Tmy.speed == SLOWEST )   //慢慢速
+			 || ( Tmy.speed == SLOW    ) ) //常慢速
+    						{
+    							Motor.counter_hx_step = Motor.counter_step - Motor.max_hx_step;
+    							//Tmy.state.bit.hx = 1;
+    							dg_sta = DG_HX_DOWN;//Tmy.work_state = STA_HX_DOWN;
+    							//MOTOR_SetDir( DOWN );
+    							//MOTOR_SetSpeed( CYCLE_HX ); //设置电机速度
+    							//SetTextValue(0,18,"回吸下降");
+    						}
+    				    }
 				   }
 			}
 			
 			//自动给药判断
-			if(1)//在xxx速度下
+			if( ( Tmy.speed == SLOWEST )   //慢慢速
+			 || ( Tmy.speed == SLOW    ) ) //常慢速
 			{
 				if( ( !Tmy.State.bit.zdgy ) && ( timer_pedal_down > TIME_ZDGY_ENABLE ) ) //按下脚踏时间大于TIME_CRUISE_START秒
 				{
@@ -712,7 +730,7 @@ static void vTaskMotorCtrl(void *pvParameters)
                 {
                     //if( dev_sta == DEV_RUN )//设备运行状态
                     {
-                        timer_pedal_down = 1; //开始计时脚踏按下
+                        timer_pedal_down = 1; //开始脚踏按下计时
                         dg_sta = DG_UP;//顶杆上升
                     }
                 }//else
