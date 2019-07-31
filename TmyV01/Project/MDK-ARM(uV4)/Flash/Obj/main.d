@@ -57,6 +57,10 @@
 .\flash\obj\main.o: ..\..\User\bsp\inc\bsp_key.h
 .\flash\obj\main.o: ..\..\User\bsp\inc\bsp_dwt.h
 .\flash\obj\main.o: ..\..\User\hx711\HX711.h
+.\flash\obj\main.o: ..\..\User\bsp\inc\bsp_ble.h
+.\flash\obj\main.o: ..\..\User\app\save2flash.h
+.\flash\obj\main.o: ..\..\User\bsp\bsp.h
+.\flash\obj\main.o: ..\..\User\app\save2flash.h
 .\flash\obj\main.o: ..\..\User\app\filter.h
 .\flash\obj\main.o: ..\..\User\app\debug.h
 .\flash\obj\main.o: ..\..\User\bsp\inc\bsp_beep.h

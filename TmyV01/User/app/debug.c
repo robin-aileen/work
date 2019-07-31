@@ -21,38 +21,12 @@
 
 #define DEBUG_GLOBAL
 
-#include "includes.h"//#include "bsp.h"
-
-#if DEBUG_EN == DEBUG_ENABLE
+#include "includes.h"
 
 
-
-void debug_at( const char * _Format, ...)
+void debug_en( uint8_t en )
 {
-#if DEBUG_AT == 1
-
-    //xSemaphoreTake(xMutex, portMAX_DELAY);
-   
-   if( lg_debug_en ) printf( _Format );
-    
-    //xSemaphoreGive(xMutex);
-    
-#endif
-
-}
-
-void debug_usr( const char * _Format, ...)
-{
-
-#if DEBUG_USR == 1
-    //xSemaphoreTake(xMutex, portMAX_DELAY);
-    
-    if( lg_debug_en ) printf( _Format );
-        
-    //xSemaphoreGive(xMutex);
-    
-#endif
-
+    lg_debug_en = en;
 }
 
 void debug_usr_hex( uint8_t *hexbuf, uint16_t len )
@@ -63,40 +37,39 @@ void debug_usr_hex( uint8_t *hexbuf, uint16_t len )
         
         for( i=0; i<len; i++ )
         {
-            ;//comSendCharHex( COM1, hexbuf[i] );
+            comSendCharHex( COM1, hexbuf[i] );
         }
     }
 }
 
-
-void debug_en( uint8_t en )
-{
-    lg_debug_en = en;
-}
-
-#else
-
 void debug_at( const char * _Format, ...)
 {
-    ;//if( lg_debug_en ) printf( _Format );
+    #if DEBUG_AT == 1
+    
+    if( lg_debug_en & 0x02 ) printf( _Format );
+        
+    #endif
+   ;
+}
+
+void debug_ble( const char * _Format, ...)
+{
+    #if DEBUG_BLE == 1
+    
+    if( lg_debug_en & 0x04 ) printf( _Format );
+        
+    #endif
+   ;
 }
 
 void debug_usr( const char * _Format, ...)
 {
-   ;//if( lg_debug_en ) printf( _Format );
-}
-
-void debug_usr_hex( uint8_t *hexbuf, uint16_t len )
-{
-  ;
-}
-
-
-void debug_en( uint8_t en )
-{
+    #if DEBUG_USR == 1
+    
+    if( lg_debug_en & 0x08 ) printf( _Format );
+        
+    #endif
    ;
 }
-
-#endif
 
 /******************************************************* END OF FILE ************************************************************/

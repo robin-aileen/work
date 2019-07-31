@@ -51,6 +51,10 @@
 .\flash\obj\bsp_beep.o: ..\..\User\bsp\inc\bsp_key.h
 .\flash\obj\bsp_beep.o: ..\..\User\bsp\inc\bsp_dwt.h
 .\flash\obj\bsp_beep.o: ..\..\User\hx711\HX711.h
+.\flash\obj\bsp_beep.o: ..\..\User\bsp\inc\bsp_ble.h
+.\flash\obj\bsp_beep.o: ..\..\User\app\save2flash.h
+.\flash\obj\bsp_beep.o: ..\..\User\bsp\bsp.h
+.\flash\obj\bsp_beep.o: ..\..\User\app\save2flash.h
 .\flash\obj\bsp_beep.o: ..\..\User\app\filter.h
 .\flash\obj\bsp_beep.o: ..\..\User\app\debug.h
 .\flash\obj\bsp_beep.o: ..\..\User\bsp\inc\bsp_beep.h

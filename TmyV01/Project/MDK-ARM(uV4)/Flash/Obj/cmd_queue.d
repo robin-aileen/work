@@ -56,6 +56,10 @@
 .\flash\obj\cmd_queue.o: ..\..\User\bsp\inc\bsp_key.h
 .\flash\obj\cmd_queue.o: ..\..\User\bsp\inc\bsp_dwt.h
 .\flash\obj\cmd_queue.o: ..\..\User\hx711\HX711.h
+.\flash\obj\cmd_queue.o: ..\..\User\bsp\inc\bsp_ble.h
+.\flash\obj\cmd_queue.o: ..\..\User\app\save2flash.h
+.\flash\obj\cmd_queue.o: ..\..\User\bsp\bsp.h
+.\flash\obj\cmd_queue.o: ..\..\User\app\save2flash.h
 .\flash\obj\cmd_queue.o: ..\..\User\app\filter.h
 .\flash\obj\cmd_queue.o: ..\..\User\app\debug.h
 .\flash\obj\cmd_queue.o: ..\..\User\bsp\inc\bsp_beep.h

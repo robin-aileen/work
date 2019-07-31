@@ -76,6 +76,8 @@
 #include "bsp_key.h"
 #include "bsp_dwt.h"
 #include "HX711.h"
+#include "bsp_ble.h"
+#include "save2flash.h"
 
 #include "filter.h"
 #include "debug.h"

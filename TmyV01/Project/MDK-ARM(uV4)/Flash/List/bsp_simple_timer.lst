@@ -141,8 +141,8 @@ N/* stddef.h: ANSI 'C' (X3J11 Oct 88) library header, section 4.1.4 */
 N
 N/* Copyright (C) ARM Ltd., 1999
 N * All rights reserved
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185525 $
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: agrant $
 N */
 N
@@ -158,7 +158,7 @@ N */
 N
 N#ifndef __stddef_h
 N#define __stddef_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N  #ifndef __STDDEF_DECLS
 N  #define __STDDEF_DECLS
@@ -235,11 +235,6 @@ N  /* EDG uses __INTADDR__ to avoid errors when strict */
 N  #define offsetof(t, memb) ((__CLIBNS size_t)__INTADDR__(&(((t *)0)->memb)))
 N#endif
 N
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 201112L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X#if !0L || (1L && 201112L <= 199409L) || (0L && 201103L <= __cplusplus)
-N  typedef long double max_align_t;
-N#endif
-N
 N    #ifdef __cplusplus
 S         }  /* extern "C" */
 S      }  /* namespace std */
@@ -251,9 +246,6 @@ N  #ifdef __cplusplus
 S    #ifndef __STDDEF_NO_EXPORTS
 S      using ::std::size_t;
 S      using ::std::ptrdiff_t;
-S      #if !defined(__STRICT_ANSI__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-S        using ::std::max_align_t;
-S      #endif
 S    #endif 
 N  #endif /* __cplusplus */
 N
@@ -282,14 +274,14 @@ N/* Copyright (C) ARM Ltd., 1999,2014 */
 N/* All rights reserved */
 N
 N/*
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185525 $
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: agrant $
 N */
 N
 N#ifndef __stdint_h
 N#define __stdint_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N  #ifdef __INT64_TYPE__
 S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
@@ -481,9 +473,9 @@ N
 N    /* maximum value of pointer-holding unsigned integer type */
 N#if __sizeof_ptr == 8
 X#if 4 == 8
-S#define UINTPTR_MAX UINT64_MAX
+S#define UINTPTR_MAX INT64_MAX
 N#else
-N#define UINTPTR_MAX UINT32_MAX
+N#define UINTPTR_MAX INT32_MAX
 N#endif
 N
 N    /* 7.18.2.5 */
@@ -5850,7 +5842,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5060750 < 400677)
+X#if (5050106 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -6478,7 +6470,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5060750 < 400677)
+X#if (5050106 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -35076,8 +35068,8 @@ N/* Copyright (C) Codemist Ltd., 1988-1993                       */
 N/* Copyright 1991-1998 ARM Limited. All rights reserved.        */
 N
 N/*
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185531 $
+N * Checkin $Date: 2014-05-29 15:16:06 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: sdouglas $
 N */
 N
@@ -35090,7 +35082,7 @@ N */
 N
 N#ifndef __stdio_h
 N#define __stdio_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N/*
 N * Depending on compiler version __int64 or __INT64_TYPE__ should be defined.
@@ -35527,14 +35519,8 @@ N    * is equivalent to sprintf, but does not support floating-point formats.
 N    * You can use instead of sprintf to improve code size.
 N    * Returns: as sprintf.
 N    */
-N
-N#pragma __printf_args
-Nextern _ARMABI int __ARM_snprintf(char * __restrict /*s*/, size_t /*n*/,
-Xextern __declspec(__nothrow) int __ARM_snprintf(char * __restrict  , size_t  ,
-N                     const char * __restrict /*format*/, ...) __attribute__((__nonnull__(3)));
-N
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X#if !0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+X#if !0L || (1L && 199901L <= 199409L)
 N#pragma __printf_args
 Nextern _ARMABI int snprintf(char * __restrict /*s*/, size_t /*n*/,
 Xextern __declspec(__nothrow) int snprintf(char * __restrict  , size_t  ,
@@ -35653,8 +35639,8 @@ N    * is equivalent to sscanf, but does not support floating-point formats.
 N    * You can use instead of sscanf to improve code size.
 N    * Returns: as sscanf.
 N    */
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X#if !0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+X#if !0L || (1L && 199901L <= 199409L)
 N/* C99 additions */
 Nextern _ARMABI int vfscanf(FILE * __restrict /*stream*/, const char * __restrict /*format*/, __va_list) __attribute__((__nonnull__(1,2)));
 Xextern __declspec(__nothrow) int vfscanf(FILE * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
@@ -35669,8 +35655,6 @@ Nextern _ARMABI int _vscanf(const char * __restrict /*format*/, __va_list) __att
 Xextern __declspec(__nothrow) int _vscanf(const char * __restrict  , __va_list) __attribute__((__nonnull__(1)));
 Nextern _ARMABI int _vsscanf(const char * __restrict /*s*/, const char * __restrict /*format*/, __va_list) __attribute__((__nonnull__(1,2)));
 Xextern __declspec(__nothrow) int _vsscanf(const char * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
-Nextern _ARMABI int __ARM_vsscanf(const char * __restrict /*s*/, const char * __restrict /*format*/, __va_list) __attribute__((__nonnull__(1,2)));
-Xextern __declspec(__nothrow) int __ARM_vsscanf(const char * __restrict  , const char * __restrict  , __va_list) __attribute__((__nonnull__(1,2)));
 N
 Nextern _ARMABI int vprintf(const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(1)));
 Xextern __declspec(__nothrow) int vprintf(const char * __restrict  , __va_list  ) __attribute__((__nonnull__(1)));
@@ -35710,11 +35694,8 @@ N    * va_end function.
 N    * Returns: the number of characters written in the array, not counting the
 N    *          terminating null character.
 N    */
-Nextern _ARMABI int __ARM_vsnprintf(char * __restrict /*s*/, size_t /*n*/,
-Xextern __declspec(__nothrow) int __ARM_vsnprintf(char * __restrict  , size_t  ,
-N                     const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(3)));
-N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X#if !0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+N#if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+X#if !0L || (1L && 199901L <= 199409L)
 Nextern _ARMABI int vsnprintf(char * __restrict /*s*/, size_t /*n*/,
 Xextern __declspec(__nothrow) int vsnprintf(char * __restrict  , size_t  ,
 N                     const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(3)));
@@ -35752,30 +35733,6 @@ N    * is equivalent to vsnprintf, but does not support floating-point formats.
 N    * You can use instead of vsnprintf to improve code size.
 N    * Returns: as vsnprintf.
 N    */
-N#if !defined(__STRICT_ANSI__)
-X#if !0L
-N#pragma __printf_args
-Nextern _ARMABI int asprintf(char ** /*strp*/, const char * __restrict /*format*/, ...) __attribute__((__nonnull__(2)));
-Xextern __declspec(__nothrow) int asprintf(char **  , const char * __restrict  , ...) __attribute__((__nonnull__(2)));
-Nextern _ARMABI int vasprintf(char ** /*strp*/, const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(2)));
-Xextern __declspec(__nothrow) int vasprintf(char **  , const char * __restrict  , __va_list  ) __attribute__((__nonnull__(2)));
-N#endif
-N#pragma __printf_args
-Nextern _ARMABI int __ARM_asprintf(char ** /*strp*/, const char * __restrict /*format*/, ...) __attribute__((__nonnull__(2)));
-Xextern __declspec(__nothrow) int __ARM_asprintf(char **  , const char * __restrict  , ...) __attribute__((__nonnull__(2)));
-Nextern _ARMABI int __ARM_vasprintf(char ** /*strp*/, const char * __restrict /*format*/, __va_list /*arg*/) __attribute__((__nonnull__(2)));
-Xextern __declspec(__nothrow) int __ARM_vasprintf(char **  , const char * __restrict  , __va_list  ) __attribute__((__nonnull__(2)));
-N   /*
-N    * dynamically allocates a buffer of the right size for the
-N    * formatted string, and returns it in (*strp). Formal return value
-N    * is the same as any other printf variant, except that it returns
-N    * -1 if the buffer could not be allocated.
-N    *
-N    * (The functions with __ARM_ prefixed names are identical to the
-N    * ones without, but are available in all compilation modes without
-N    * violating user namespace.)
-N    */
-N
 Nextern _ARMABI int fgetc(FILE * /*stream*/) __attribute__((__nonnull__(1)));
 Xextern __declspec(__nothrow) int fgetc(FILE *  ) __attribute__((__nonnull__(1)));
 N   /*
@@ -36116,7 +36073,7 @@ S    using ::std::printf;
 S    using ::std::_printf;
 S    using ::std::sprintf;
 S    using ::std::_sprintf;
-S    #if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
+S    #if !defined(__STRICT_ANSI__) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
 S      using ::std::snprintf;
 S      using ::std::vsnprintf;
 S      using ::std::vfscanf;
@@ -36125,15 +36082,6 @@ S      using ::std::vsscanf;
 S    #endif
 S    using ::std::_snprintf;
 S    using ::std::_vsnprintf;
-S#if !defined(__STRICT_ANSI__)
-S    using ::std::asprintf;
-S    using ::std::vasprintf;
-S#endif
-S    using ::std::__ARM_asprintf;
-S    using ::std::__ARM_vasprintf;
-S    using ::std::__ARM_vsnprintf;
-S    using ::std::__ARM_snprintf;
-S    using ::std::__ARM_vsscanf;
 S    using ::std::fscanf;
 S    using ::std::_fscanf;
 S    using ::std::scanf;
@@ -36190,8 +36138,8 @@ N/* Copyright 1991-1993 ARM Limited. All rights reserved.          */
 N/* version 0.04 */
 N
 N/*
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185525 $
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N */
 N
 N/*
@@ -36205,7 +36153,7 @@ N */
 N
 N#ifndef __string_h
 N#define __string_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N#define _ARMABI __declspec(__nothrow)
 N
@@ -36739,8 +36687,8 @@ N/* stdlib.h: ANSI draft (X3J11 May 88) library header, section 4.10 */
 N/* Copyright (C) Codemist Ltd., 1988-1993.                          */
 N/* Copyright 1991-1998,2014 ARM Limited. All rights reserved.       */
 N/*
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185525 $
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: agrant $
 N */
 N 
@@ -36751,7 +36699,7 @@ N */
 N
 N#ifndef __stdlib_h
 N#define __stdlib_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N#if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
 X#if 0L || (1L && !0L)
@@ -36775,8 +36723,8 @@ N   * Some of these declarations are new in C99.  To access them in C++
 N   * you can use -D__USE_C99_STDLIB (or -D__USE_C99ALL).
 N   */
 N  #ifndef __USE_C99_STDLIB
-N    #if defined(__USE_C99_ALL) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__) || (defined(__cplusplus) && 201103L <= __cplusplus)
-X    #if 0L || (1L && 199901L <= 199409L) || (0L && 201103L <= __cplusplus)
+N    #if defined(__USE_C99_ALL) || (defined(__STDC_VERSION__) && 199901L <= __STDC_VERSION__)
+X    #if 0L || (1L && 199901L <= 199409L)
 S      #define __USE_C99_STDLIB 1
 N    #endif
 N  #endif
@@ -37770,7 +37718,7 @@ N*/
 N#define	UART1_FIFO_EN	1
 N#define	UART2_FIFO_EN	1
 N#define	UART3_FIFO_EN	0
-N#define	UART4_FIFO_EN	0
+N#define	UART4_FIFO_EN	1
 N#define	UART5_FIFO_EN	0
 N
 N/* RS485芯片发送使能GPIO, PB2 */
@@ -37815,10 +37763,10 @@ S	#define UART3_RX_BUF_SIZE	1*1024
 N#endif
 N
 N#if UART4_FIFO_EN == 1
-X#if 0 == 1
-S	#define UART4_BAUD			115200
-S	#define UART4_TX_BUF_SIZE	1*1024
-S	#define UART4_RX_BUF_SIZE	1*1024
+X#if 1 == 1
+N	#define UART4_BAUD			115200
+N	#define UART4_TX_BUF_SIZE	1*1024
+N	#define UART4_RX_BUF_SIZE	1*1024
 N#endif
 N
 N#if UART5_FIFO_EN == 1
@@ -37871,6 +37819,8 @@ Nvoid bsp_Set485Baud(uint32_t _baud);
 N
 Nvoid bsp_SetUart1Baud(uint32_t _baud);
 Nvoid bsp_SetUart2Baud(uint32_t _baud);
+Nuint16_t comGetALine(COM_PORT_E _ucPort, uint8_t *line);
+Nvoid comSendCharHex(COM_PORT_E _ucPort, uint8_t _ucByte);
 N
 N#endif
 N
@@ -38296,6 +38246,408 @@ N#endif
 N
 N/******************************************************* END OF FILE ************************************************************/
 L 79 "..\..\User\bsp\bsp.h" 2
+N#include "bsp_ble.h"
+L 1 "..\..\User\bsp\inc\bsp_ble.h" 1
+N
+N/*
+N************************************************************************************************************
+N*
+N*	模块名称 : BLE驱动模块
+N*	文件名称 : BLE.h
+N*	版    本 : V1.0
+N*   M  C  U  : STM32F103RBT6
+N*   编 译 器 : IAR-Arm 8.22.2
+N*
+N*	说    明 : BLEM驱动模块,GPRS+GNSS,主要是一些IO控制，GNSS协议解析，AT流程放到主任务里了
+N*
+N*	修改记录 :
+N*		版本号  日期        作者     说明
+N*		V1.0    2018-05-15 robin   正式发布
+N*
+N*	Copyright (C), 2018-2028
+N*
+N************************************************************************************************************
+N*/
+N
+N
+N#ifndef _BLE_H
+N#define _BLE_H
+N
+N#ifndef BLE_GLOBAL
+N
+N#define BLE_EXT extern
+N#else
+S#define BLE_EXT
+N#endif
+N
+N#define BLE_COM COM4
+N
+N#define BLE_TX_BUF_SIZE 100
+N#define BLE_RX_BUF_SIZE 100
+N
+Nstatic uint8_t BLE_TxBuf[ BLE_TX_BUF_SIZE ];		//发送缓冲区
+Xstatic uint8_t BLE_TxBuf[ 100 ];		
+Nstatic uint8_t BLE_RxBuf[ BLE_RX_BUF_SIZE ];		//接收缓冲区
+Xstatic uint8_t BLE_RxBuf[ 100 ];		
+N
+N#define RCC_ALL_BLE 	(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB)
+N
+N#define GPIO_PORT_BLE_WAKE      GPIOB
+N#define GPIO_PIN_BLE_WAKE       GPIO_Pin_7
+N
+N#define GPIO_PORT_BLE_RESET     GPIOB
+N#define GPIO_PIN_BLE_RESET      GPIO_Pin_6
+N
+N#define GPIO_PORT_BLE_LINK     GPIOA
+N#define GPIO_PIN_BLE_LINK      GPIO_Pin_15
+N
+N#define BLE_PEDAL_UP      0xAA
+N#define BLE_PEDAL_DOWN    0x55
+N
+N
+N// #define BLE_P_HEAD 0x06
+N
+N// #define BLE_GET_TOKEN   0x0601 //获取令牌
+N// #define BLE_ACK_TOKEN   (BLE_GET_TOKEN+1) //获取令牌，回应
+N
+N// #define BLE_SET_NAME    0x0401 //修改广播名称
+N// #define BLE_ACK_NAME   (BLE_SET_NAME+1) //获取电量，回应
+N
+N// #define BLE_GET_POWER   0x0201 //获取电量
+N// #define BLE_ACK_POWER   (BLE_GET_POWER+1) //获取电量，回应
+N
+N// #define BLE_UNLOCK      0x0501 //开锁
+N// #define BLE_ACK_UNLOCK  (BLE_UNLOCK+1) //开锁，回应
+N
+N// #define BLE_LOCK        0x050C //关锁
+N// #define BLE_ACK_LOCK    (BLE_LOCK+1) //关锁，回应
+N
+N// #define BLE_GET_STA     0x050E //查询锁状态
+N// #define BLE_ACK_STA    (BLE_GET_STA+1) //查询锁状态，回应
+N
+N// #define BLE_REPORT_STA  0x0508 //上报状态
+N
+N// #define BLE_OLD_PWD     0x0503 //修改密码，旧密码
+N// #define BLE_NEW_PWD     0x0504 //修改密码，新密码
+N// #define BLE_ACK_PWD     (BLE_NEW_PWD+1) //修改密码，回应
+N
+N// #define BLE_SET_KEYL    0x0701 //修改秘钥，新密钥前 8 个字节
+N// #define BLE_SET_KEYH    0x0702 //修改秘钥，新密钥后 8 个字节
+N// #define BLE_ACK_KEY     0x0703 //修改秘钥，回应
+N
+N// #define BLE_MODE_DATA   0 //透传模式
+N// #define BLE_MODE_AT     1 //指令模式
+N// //Ble.state.bit.mode = BLE_MODE_AT;
+N
+N#define BLE_UUID_SERVER 
+Nenum BLE_ATTYPE{
+N    AT_MODE, DATA_MODE
+N};
+N
+Ntypedef struct
+N{
+N    uint8_t link:1;
+N    uint8_t mode:1; //0:透传模式 1:命令模式
+N    uint8_t sleep:1; //休眠
+N    uint8_t wake:1; //唤醒
+N    uint8_t go_to_sleep:1; //将要休眠
+N    uint8_t go_to_wake:1; //将要唤醒
+N	uint8_t :2;
+N
+N}TYPE_BLE_STATE_BIT;
+N
+Ntypedef union
+N{
+N    TYPE_BLE_STATE_BIT bit;
+N    uint8_t all;
+N}TYPE_BLE_STATE;
+N
+N
+Ntypedef struct
+N{
+N    uint8_t pwd     :1; //修改密码
+N    uint8_t key     :1; //修改秘钥
+N    uint8_t reset   :1; //复位标志    
+N	uint8_t         :5;
+N
+N}TYPE_LG_BIT;
+N
+Ntypedef union
+N{
+N    TYPE_LG_BIT bit;
+N    uint8_t all;
+N}TYPE_LG;
+N
+N#define BLE_TIME_NODATA 30 //BLE没有数据计时
+N
+Ntypedef struct
+N{
+N    TYPE_BLE_STATE state;
+N    TYPE_LG lg;
+N    uint8_t Token[5];
+N    uint8_t Mac[13]; //12位
+N    char Name[9]; //NAME 为广播名称，最多支持 8 个 ASCII 字符
+N    uint8_t timer_ble_nodata;
+N}TYPE_BLE;
+N
+NBLE_EXT TYPE_BLE Ble;
+Xextern TYPE_BLE Ble;
+N
+N
+N//-----------------------------------------模块类型-------------------------------------------------
+N
+N
+N//enum BLE_ATTYPE{
+N//    POWON,
+N//    AT, CGSN,/* BLEAND, */NUESTATS, CFUN0, NCSEARFCN, NCDP, CFUN,  NCCID, CGDCONT, CPSMS, CGATT, NNMI,
+N//    NSMI, CSQ_INIT, CCLK, CGPADDR, CSQ, NQMGR, NMGR, CHKSEND, NMGS,
+N//    BLETXDTASK_STANDBY, GPRS_OFFLINE, QICLOSE, BLE_IDLE,
+N//    HWRESET, SHUTDOWN
+N//};
+N//
+N
+N/* 供外部调用的函数声明 */
+NBLE_EXT void BLE_Init( void );
+Xextern void BLE_Init( void );
+NBLE_EXT void BLE_HwReset(void);
+Xextern void BLE_HwReset(void);
+NBLE_EXT void BLE_WakeUp(void);
+Xextern void BLE_WakeUp(void);
+NBLE_EXT uint8_t BLE_Sleep(void);
+Xextern uint8_t BLE_Sleep(void);
+N
+NBLE_EXT uint8_t BLE_GetMsg( void );//uint8_t BLE_GetMsg( uint8_t *msg, uint16_t len );
+Xextern uint8_t BLE_GetMsg( void );
+NBLE_EXT uint8_t BLE_Pares( uint8_t *msg, uint8_t len );
+Xextern uint8_t BLE_Pares( uint8_t *msg, uint8_t len );
+NBLE_EXT uint8_t BLE_ReportState( void );
+Xextern uint8_t BLE_ReportState( void );
+NBLE_EXT uint8_t BLE_PapaInit( void );
+Xextern uint8_t BLE_PapaInit( void );
+NBLE_EXT void BLE_CheckState( void );
+Xextern void BLE_CheckState( void );
+N
+N#endif
+N
+N/******************************************************* END OF FILE ************************************************************/
+L 80 "..\..\User\bsp\bsp.h" 2
+N#include "save2flash.h"
+L 1 "..\..\User\app\save2flash.h" 1
+N
+N/*
+N*********************************************************************************************************
+N*
+N*	模块名称 : IAP驱动模块
+N*	文件名称 : save2flash.h
+N*	版    本 : V1.0
+N*   M  C  U  : STM32F103RBT6
+N*   编 译 器 : IAR-Arm 8.22.2
+N*
+N*	说    明 : IAP做EEPROM
+N*              
+N*	修改记录 :
+N*		版本号  日期        作者     说明
+N*		V1.0    2018-05-01 robin   正式发布
+N*
+N*	Copyright (C), 2018-2028
+N*
+N*********************************************************************************************************
+N*/
+N
+N#ifndef _SAVE2FLASH_H 
+N#define _SAVE2FLASH_H
+N
+N#ifndef SAVE2FLASH_GLOBAL 
+N#define SAVE2FLASH_EXT	extern 
+N#else 
+S#define SAVE2FLASH_EXT 
+N#endif 
+N
+N#include "bsp.h"
+L 1 "..\..\User\bsp\bsp.h" 1
+N/*
+N*********************************************************************************************************
+N*
+N*	模块名称 : BSP模块
+N*	文件名称 : bsp.h
+N*	说    明 : 这是底层驱动模块所有的h文件的汇总文件。 应用程序只需 #include bsp.h 即可，
+N*			  不需要#include 每个模块的 h 文件
+N*
+N*	Copyright (C), 2013-2014, 安富莱电子 www.armfly.com
+N*
+N*********************************************************************************************************
+N*/
+N
+N#ifndef _BSP_H_
+N#define _BSP_H
+N
+N#define STM32_V4
+N//#define STM32_X2
+N
+N/* 检查是否定义了开发板型号 */
+N#if !defined (STM32_V4) && !defined (STM32_X2)
+X#if !1L && !0L
+S	#error "Please define the board model : STM32_X2 or STM32_V4"
+N#endif
+N
+N/* 定义 BSP 版本号 */
+N#define __STM32F1_BSP_VERSION		"1.1"
+N
+N/* CPU空闲时执行的函数 */
+N//#define CPU_IDLE()		bsp_Idle()
+N
+N#define  USE_FreeRTOS      1
+N
+N#if USE_FreeRTOS == 1
+X#if 1 == 1
+N	#include "FreeRTOS.h"
+N	#include "task.h"
+N	#define DISABLE_INT()    taskENTER_CRITICAL()
+N	#define ENABLE_INT()     taskEXIT_CRITICAL()
+N#else
+S	/* 开关全局中断的宏 */
+S	#define ENABLE_INT()	__set_PRIMASK(0)	/* 使能全局中断 */
+S	#define DISABLE_INT()	__set_PRIMASK(1)	/* 禁止全局中断 */
+N#endif
+N
+N/* 这个宏仅用于调试阶段排错 */
+N#define BSP_Printf		printf
+N//#define BSP_Printf(...)
+N
+N#include "stm32f10x.h"
+N#include <stdio.h>
+N#include <string.h>
+N#include <stdlib.h>
+N
+N#ifndef TRUE
+S	#define TRUE  1
+N#endif
+N
+N#ifndef FALSE
+S	#define FALSE 0
+N#endif
+N
+N/*
+N	EXTI9_5_IRQHandler 的中断服务程序分散在几个独立的 bsp文件中。
+N	需要整合到 stm32f4xx_it.c 中。
+N
+N	定义下面行表示EXTI9_5_IRQHandler入口函数集中放到 stm32f4xx_it.c。
+N*/
+N#define EXTI9_5_ISR_MOVE_OUT
+N
+N#define DEBUG_GPS_TO_COM1	/* 打印GPS数据到串口1 */
+N
+N/* 通过取消注释或者添加注释的方式控制是否包含底层驱动模块 */
+N#include "bsp_uart_fifo.h"
+N#include "bsp_led.h"
+N#include "bsp_adc_int.h"
+N#include "bsp_simple_timer.h"
+N#include "bsp_key.h"
+N#include "bsp_dwt.h"
+N#include "HX711.h"
+N#include "bsp_ble.h"
+N#include "save2flash.h"
+L 1 "..\..\User\app\save2flash.h" 1
+N
+N/*
+N*********************************************************************************************************
+N*
+N*	模块名称 : IAP驱动模块
+N*	文件名称 : save2flash.h
+N*	版    本 : V1.0
+N*   M  C  U  : STM32F103RBT6
+N*   编 译 器 : IAR-Arm 8.22.2
+N*
+N*	说    明 : IAP做EEPROM
+N*              
+N*	修改记录 :
+N*		版本号  日期        作者     说明
+N*		V1.0    2018-05-01 robin   正式发布
+N*
+N*	Copyright (C), 2018-2028
+N*
+N*********************************************************************************************************
+N*/
+N
+N#ifndef _SAVE2FLASH_H 
+S#define _SAVE2FLASH_H
+S
+S#ifndef SAVE2FLASH_GLOBAL 
+S#define SAVE2FLASH_EXT	extern 
+S#else 
+S#define SAVE2FLASH_EXT 
+S#endif 
+S
+S#include "bsp.h"
+S//----------------------------------------------------------------------------------------------------------------------
+S
+S#define F_BASE             0
+S
+S#define BIT_LG_TIME 0x01
+S
+S#define FLASH_DATA_SIZE ( sizeof(TYPE_SAVE_DATA)/2 )
+S
+S//默认参数
+S//#define TIME_LOCK_WAKE      (24*60*60) //锁无自动唤醒时间，单位s
+S#define TIME_LOCK_WAKE      (24*60) //锁无自动唤醒时间，单位 分钟
+S#define TIME_LOCK_SLEEP     20 //锁无数据进入休眠时间，单位s
+S#define TIME_NB_SLEEP       20 //nb无数据进入休眠时间，单位s
+S#define THR_LOWPOWER        10 //低电量门限，单位%
+S
+S#define TIME_LOCK_HEART     20 //心跳时间，单位s
+S#define COUNT_MAX_HEART     3  //激活重发次数
+S
+S#define SAVE_LG_MASK 0x001F
+S
+Stypedef struct 
+S{
+S    uint16_t ip             : 1;
+S    uint16_t EnKey          : 1;
+S    uint16_t time_sleep     : 1;
+S    uint16_t time_wake      : 1;
+S    uint16_t threshold_lowpower : 1;
+S    uint16_t                : 11;
+S}TYPE_SAVE_LG_BIT;
+S
+Stypedef union
+S{
+S    TYPE_SAVE_LG_BIT bit;
+S    uint16_t buf;
+S}TYPE_SAVE_LG;
+S
+Stypedef struct
+S{
+S    uint8_t threshold_lowpower;
+S    
+S    uint8_t PWD[7]; //密码
+S    uint8_t TOKEN[5];//令牌
+S    uint8_t KEY[17];//秘钥
+S    uint8_t NAME[16];//广播名称 最长15个字节
+S    char IP[16];
+S    char PORT[8];
+S    uint8_t EncKey[5];
+S    TYPE_SAVE_LG lg;
+S    uint32_t time_sleep;
+S    uint32_t time_wake;
+S    //uint32_t time_heart;
+S    
+S}TYPE_SAVE_DATA;
+S
+Stypedef union
+S{
+S    TYPE_SAVE_DATA data;
+S    uint16_t buf[ FLASH_DATA_SIZE ];//uint16_t buf[ FLASH_DATA_SIZE ];
+S}TYPE_FLASH_EEPROM;
+S
+SSAVE2FLASH_EXT TYPE_FLASH_EEPROM data_saved;
+S
+SSAVE2FLASH_EXT void SaveToFlash( void );
+SSAVE2FLASH_EXT uint8_t ReadFromFlash( void );
+S
+N#endif
+N
+N/******************************************************* END OF FILE ************************************************************/
+L 81 "..\..\User\bsp\bsp.h" 2
 N
 N#include "filter.h"
 L 1 "..\..\User\app\filter.h" 1
@@ -38361,7 +38713,7 @@ N
 N#endif
 N
 N/******************************************************* END OF FILE ************************************************************/
-L 81 "..\..\User\bsp\bsp.h" 2
+L 83 "..\..\User\bsp\bsp.h" 2
 N#include "debug.h"
 L 1 "..\..\User\app\debug.h" 1
 N
@@ -38401,23 +38753,37 @@ N
 N#define DEBUG_DISABLE   0 //软件使能debug输出
 N#define DEBUG_ENABLE    1 //软件禁止debug输出
 N
-N#define DEBUG_AT        1//DEBUG_ENABLE //
-N#define DEBUG_USR       1//DEBUG_ENABLE //
+N//#if DEBUG_EN == 0
+N//
+N//    #define DEBUG_BLE       0
+N//    #define DEBUG_AT        0
+N//    #define DEBUG_USR       0
+N//#else
+N    
+N    #define DEBUG_BLE       0//DEBUG_ENABLE //
+N    #define DEBUG_AT        1//DEBUG_ENABLE //
+N    #define DEBUG_USR       1//DEBUG_ENABLE //
+N
+N//#endif
 N
 NDEBUG_EXT uint8_t lg_debug_en;
 Xextern uint8_t lg_debug_en;
 N
-N//void debug_printf( uint8_t type, const char * _Format, ...);
-Nvoid debug_printf( const char * _Format, ...);
-Nvoid debug_at( const char * _Format, ...);
-Nvoid debug_usr( const char * _Format, ...);
-Nvoid debug_en( uint8_t en );
-Nvoid debug_usr_hex( uint8_t *hexbuf, uint16_t len );
+NDEBUG_EXT void debug_en( uint8_t en );
+Xextern void debug_en( uint8_t en );
+NDEBUG_EXT void debug_ble( const char * _Format, ...);
+Xextern void debug_ble( const char * _Format, ...);
+NDEBUG_EXT void debug_at( const char * _Format, ...);
+Xextern void debug_at( const char * _Format, ...);
+NDEBUG_EXT void debug_usr( const char * _Format, ...);
+Xextern void debug_usr( const char * _Format, ...);
+NDEBUG_EXT void debug_usr_hex( uint8_t *hexbuf, uint16_t len );
+Xextern void debug_usr_hex( uint8_t *hexbuf, uint16_t len );
 N
 N#endif
 N
 N/******************************************************* END OF FILE ************************************************************/
-L 82 "..\..\User\bsp\bsp.h" 2
+L 84 "..\..\User\bsp\bsp.h" 2
 N
 N#include "bsp_beep.h"
 L 1 "..\..\User\bsp\inc\bsp_beep.h" 1
@@ -38458,7 +38824,7 @@ N
 N#endif
 N
 N/***************************** 安富莱电子 www.armfly.com (END OF FILE) *********************************/
-L 84 "..\..\User\bsp\bsp.h" 2
+L 86 "..\..\User\bsp\bsp.h" 2
 N#include "bsp_uart_lcd.h"
 L 1 "..\..\User\app\bsp_uart_lcd.h" 1
 N// =====================================================================================================================
@@ -38521,7 +38887,7 @@ Xextern void ULCD_Task( void );
 NULCD_EXT void LCD_ParaInit( void );
 Xextern void LCD_ParaInit( void );
 N#endif
-L 85 "..\..\User\bsp\bsp.h" 2
+L 87 "..\..\User\bsp\bsp.h" 2
 N#include "hmi_driver.h"
 L 1 "..\..\User\lcd\inc\hmi_driver.h" 1
 N/*! 
@@ -39652,7 +40018,7 @@ Nvoid PlayMusic(uint8 *buffer);
 Xvoid PlayMusic(unsigned char *buffer);
 N
 N#endif      //_HMI_DRIVER_
-L 86 "..\..\User\bsp\bsp.h" 2
+L 88 "..\..\User\bsp\bsp.h" 2
 N
 N#include "main.h"
 L 1 "..\..\User\main.h" 1
@@ -39861,7 +40227,152 @@ NMAIN_EXT TYPE_STRUCT_TMY Tmy;
 Xextern TYPE_STRUCT_TMY Tmy;
 N
 N#endif
-L 88 "..\..\User\bsp\bsp.h" 2
+L 90 "..\..\User\bsp\bsp.h" 2
+N//#include "bsp_tim_pwm.h"
+N
+N//#include "bsp_cpu_flash.h"
+N//#include "bsp_sdio_sd.h"
+N//#include "bsp_i2c_gpio.h"
+N//#include "bsp_eeprom_24xx.h"
+N//#include "bsp_si4730.h"
+N//#include "bsp_hmc5883l.h"
+N//#include "bsp_mpu6050.h"
+N//#include "bsp_bh1750.h"
+N//#include "bsp_bmp180.h"
+N//#include "bsp_wm8978.h"
+N//#include "bsp_gt811.h"
+N
+N//#include "bsp_fsmc_sram.h"
+N//#include "bsp_nand_flash.h"
+N//#include "bsp_nor_flash.h"
+N
+N//#include "LCD_RA8875.h"
+N//#include "LCD_SPFD5420.h"
+N//#include "LCD_ILI9488.h"
+N//#include "bsp_ra8875_port.h"
+N//#include "bsp_tft_lcd.h"
+N
+N//#include "bsp_touch.h"
+N
+N
+N//#include "bsp_oled.h"
+N//#include "bsp_sim800.h"
+N//#include "bsp_ra8875_flash.h"
+N
+N//#include "bsp_spi_bus.h"
+N//#include "bsp_spi_flash.h"
+N//#include "bsp_tm7705.h"
+N//#include "bsp_vs1053b.h"
+N//#include "bsp_tsc2046.h"
+N
+N//#include "bsp_ds18b20.h"
+N//#include "bsp_dac8501.h"
+N//#include "bsp_dht11.h"
+N
+N//#include "bsp_ir_decode.h"
+N//#include "bsp_ps2.h"
+N
+N//#include "bsp_modbus.h"
+N//#include "bsp_rs485_led.h"
+N//#include "bsp_user_lib.h"
+N
+N//#include "bsp_dac8501.h"
+N//#include "bsp_dac8562.h"
+N
+N//#include "bsp_esp8266.h"
+N//#include "bsp_step_moto.h"
+N
+N/* 提供给其他C文件调用的函数 */
+Nvoid bsp_Init(void);
+Nvoid bsp_Idle(void);
+Nvoid BSP_Tick_Init (void);
+N
+N#endif
+N
+N/***************************** 安富莱电子 www.armfly.com (END OF FILE) *********************************/
+L 32 "..\..\User\app\save2flash.h" 2
+N//----------------------------------------------------------------------------------------------------------------------
+N
+N#define F_BASE             0
+N
+N#define BIT_LG_TIME 0x01
+N
+N#define FLASH_DATA_SIZE ( sizeof(TYPE_SAVE_DATA)/2 )
+N
+N//默认参数
+N//#define TIME_LOCK_WAKE      (24*60*60) //锁无自动唤醒时间，单位s
+N#define TIME_LOCK_WAKE      (24*60) //锁无自动唤醒时间，单位 分钟
+N#define TIME_LOCK_SLEEP     20 //锁无数据进入休眠时间，单位s
+N#define TIME_NB_SLEEP       20 //nb无数据进入休眠时间，单位s
+N#define THR_LOWPOWER        10 //低电量门限，单位%
+N
+N#define TIME_LOCK_HEART     20 //心跳时间，单位s
+N#define COUNT_MAX_HEART     3  //激活重发次数
+N
+N#define SAVE_LG_MASK 0x001F
+N
+Ntypedef struct 
+N{
+N    uint16_t ip             : 1;
+N    uint16_t EnKey          : 1;
+N    uint16_t time_sleep     : 1;
+N    uint16_t time_wake      : 1;
+N    uint16_t threshold_lowpower : 1;
+N    uint16_t                : 11;
+N}TYPE_SAVE_LG_BIT;
+N
+Ntypedef union
+N{
+N    TYPE_SAVE_LG_BIT bit;
+N    uint16_t buf;
+N}TYPE_SAVE_LG;
+N
+Ntypedef struct
+N{
+N    uint8_t threshold_lowpower;
+N    
+N    uint8_t PWD[7]; //密码
+N    uint8_t TOKEN[5];//令牌
+N    uint8_t KEY[17];//秘钥
+N    uint8_t NAME[16];//广播名称 最长15个字节
+N    char IP[16];
+N    char PORT[8];
+N    uint8_t EncKey[5];
+N    TYPE_SAVE_LG lg;
+N    uint32_t time_sleep;
+N    uint32_t time_wake;
+N    //uint32_t time_heart;
+N    
+N}TYPE_SAVE_DATA;
+N
+Ntypedef union
+N{
+N    TYPE_SAVE_DATA data;
+N    uint16_t buf[ FLASH_DATA_SIZE ];//uint16_t buf[ FLASH_DATA_SIZE ];
+X    uint16_t buf[ ( sizeof(TYPE_SAVE_DATA)/2 ) ];
+N}TYPE_FLASH_EEPROM;
+N
+NSAVE2FLASH_EXT TYPE_FLASH_EEPROM data_saved;
+Xextern TYPE_FLASH_EEPROM data_saved;
+N
+NSAVE2FLASH_EXT void SaveToFlash( void );
+Xextern void SaveToFlash( void );
+NSAVE2FLASH_EXT uint8_t ReadFromFlash( void );
+Xextern uint8_t ReadFromFlash( void );
+N
+N#endif
+N
+N/******************************************************* END OF FILE ************************************************************/
+L 81 "..\..\User\bsp\bsp.h" 2
+N
+N#include "filter.h"
+N#include "debug.h"
+N
+N#include "bsp_beep.h"
+N#include "bsp_uart_lcd.h"
+N#include "hmi_driver.h"
+N
+N#include "main.h"
 N//#include "bsp_tim_pwm.h"
 N
 N//#include "bsp_cpu_flash.h"

@@ -4,6 +4,7 @@
 ".\flash\obj\bsp_uart_lcd.o"
 ".\flash\obj\filter.o"
 ".\flash\obj\debug.o"
+".\flash\obj\save2flash.o"
 ".\flash\obj\bsp.o"
 ".\flash\obj\bsp_key.o"
 ".\flash\obj\bsp_led.o"
@@ -14,6 +15,7 @@
 ".\flash\obj\bsp_simple_timer.o"
 ".\flash\obj\bsp_adc_int.o"
 ".\flash\obj\bsp_dwt.o"
+".\flash\obj\bsp_ble.o"
 ".\flash\obj\cmd_queue.o"
 ".\flash\obj\hmi_driver.o"
 ".\flash\obj\hmi_user_uart.o"
@@ -38,6 +40,6 @@
 ".\flash\obj\port.o"
 ".\flash\obj\heap_4.o"
 --library_type=microlib --strict --scatter ".\Flash\Obj\output.sct"
---summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\Flash\List\output.map" -o .\Flash\Obj\output.axf

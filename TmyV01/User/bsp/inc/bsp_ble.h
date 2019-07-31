@@ -30,7 +30,7 @@
 #define BLE_EXT
 #endif
 
-#define BLE_COM COM3
+#define BLE_COM COM4
 
 #define BLE_TX_BUF_SIZE 100
 #define BLE_RX_BUF_SIZE 100
@@ -40,56 +40,52 @@ static uint8_t BLE_RxBuf[ BLE_RX_BUF_SIZE ];		//接收缓冲区
 
 #define RCC_ALL_BLE 	(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB)
 
-#define GPIO_PORT_BLE_WAKE      GPIOA
+#define GPIO_PORT_BLE_WAKE      GPIOB
 #define GPIO_PIN_BLE_WAKE       GPIO_Pin_7
 
-#define GPIO_PORT_BLE_RESET     GPIOA
-#define GPIO_PIN_BLE_RESET      GPIO_Pin_1
+#define GPIO_PORT_BLE_RESET     GPIOB
+#define GPIO_PIN_BLE_RESET      GPIO_Pin_6
 
-#define GPIO_PORT_BLE_LINK     GPIOB
-#define GPIO_PIN_BLE_LINK      GPIO_Pin_8
+#define GPIO_PORT_BLE_LINK     GPIOA
+#define GPIO_PIN_BLE_LINK      GPIO_Pin_15
 
-#define BLE_P_HEAD 0x06
+#define BLE_PEDAL_UP      0xAA
+#define BLE_PEDAL_DOWN    0x55
 
-//#define BLE_GET_TOKEN   "\X06\X01" //获取令牌
-//#define BLE_CHANGE_NAME "\X04\X01" //修改广播名称
-//#define BLE_GET_POWER   "\X02\X01" //获取电量
-//#define BLE_UNLOCK      "\X05\X01" //开锁
-//#define BLE_LOCK        "\X05\X0C" //关锁
-//#define BLE_GET_STA     "\X05\X0E" //查询锁状态
-//#define BLE_REPORT_STA  "\X05\X08" //上报状态
 
-#define BLE_GET_TOKEN   0x0601 //获取令牌
-#define BLE_ACK_TOKEN   (BLE_GET_TOKEN+1) //获取令牌，回应
+// #define BLE_P_HEAD 0x06
 
-#define BLE_SET_NAME    0x0401 //修改广播名称
-#define BLE_ACK_NAME   (BLE_SET_NAME+1) //获取电量，回应
+// #define BLE_GET_TOKEN   0x0601 //获取令牌
+// #define BLE_ACK_TOKEN   (BLE_GET_TOKEN+1) //获取令牌，回应
 
-#define BLE_GET_POWER   0x0201 //获取电量
-#define BLE_ACK_POWER   (BLE_GET_POWER+1) //获取电量，回应
+// #define BLE_SET_NAME    0x0401 //修改广播名称
+// #define BLE_ACK_NAME   (BLE_SET_NAME+1) //获取电量，回应
 
-#define BLE_UNLOCK      0x0501 //开锁
-#define BLE_ACK_UNLOCK  (BLE_UNLOCK+1) //开锁，回应
+// #define BLE_GET_POWER   0x0201 //获取电量
+// #define BLE_ACK_POWER   (BLE_GET_POWER+1) //获取电量，回应
 
-#define BLE_LOCK        0x050C //关锁
-#define BLE_ACK_LOCK    (BLE_LOCK+1) //关锁，回应
+// #define BLE_UNLOCK      0x0501 //开锁
+// #define BLE_ACK_UNLOCK  (BLE_UNLOCK+1) //开锁，回应
 
-#define BLE_GET_STA     0x050E //查询锁状态
-#define BLE_ACK_STA    (BLE_GET_STA+1) //查询锁状态，回应
+// #define BLE_LOCK        0x050C //关锁
+// #define BLE_ACK_LOCK    (BLE_LOCK+1) //关锁，回应
 
-#define BLE_REPORT_STA  0x0508 //上报状态
+// #define BLE_GET_STA     0x050E //查询锁状态
+// #define BLE_ACK_STA    (BLE_GET_STA+1) //查询锁状态，回应
 
-#define BLE_OLD_PWD     0x0503 //修改密码，旧密码
-#define BLE_NEW_PWD     0x0504 //修改密码，新密码
-#define BLE_ACK_PWD     (BLE_NEW_PWD+1) //修改密码，回应
+// #define BLE_REPORT_STA  0x0508 //上报状态
 
-#define BLE_SET_KEYL    0x0701 //修改秘钥，新密钥前 8 个字节
-#define BLE_SET_KEYH    0x0702 //修改秘钥，新密钥后 8 个字节
-#define BLE_ACK_KEY     0x0703 //修改秘钥，回应
+// #define BLE_OLD_PWD     0x0503 //修改密码，旧密码
+// #define BLE_NEW_PWD     0x0504 //修改密码，新密码
+// #define BLE_ACK_PWD     (BLE_NEW_PWD+1) //修改密码，回应
 
-#define BLE_MODE_DATA   0 //透传模式
-#define BLE_MODE_AT     1 //指令模式
-//Ble.state.bit.mode = BLE_MODE_AT;
+// #define BLE_SET_KEYL    0x0701 //修改秘钥，新密钥前 8 个字节
+// #define BLE_SET_KEYH    0x0702 //修改秘钥，新密钥后 8 个字节
+// #define BLE_ACK_KEY     0x0703 //修改秘钥，回应
+
+// #define BLE_MODE_DATA   0 //透传模式
+// #define BLE_MODE_AT     1 //指令模式
+// //Ble.state.bit.mode = BLE_MODE_AT;
 
 #define BLE_UUID_SERVER 
 enum BLE_ATTYPE{
@@ -163,7 +159,7 @@ BLE_EXT void BLE_HwReset(void);
 BLE_EXT void BLE_WakeUp(void);
 BLE_EXT uint8_t BLE_Sleep(void);
 
-BLE_EXT uint8_t BLE_GetMsg( uint8_t *msg, uint16_t len );
+BLE_EXT uint8_t BLE_GetMsg( void );//uint8_t BLE_GetMsg( uint8_t *msg, uint16_t len );
 BLE_EXT uint8_t BLE_Pares( uint8_t *msg, uint8_t len );
 BLE_EXT uint8_t BLE_ReportState( void );
 BLE_EXT uint8_t BLE_PapaInit( void );

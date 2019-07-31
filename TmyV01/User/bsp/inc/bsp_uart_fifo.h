@@ -40,7 +40,7 @@
 #define	UART1_FIFO_EN	1
 #define	UART2_FIFO_EN	1
 #define	UART3_FIFO_EN	0
-#define	UART4_FIFO_EN	0
+#define	UART4_FIFO_EN	1
 #define	UART5_FIFO_EN	0
 
 /* RS485Ð¾Æ¬·¢ËÍÊ¹ÄÜGPIO, PB2 */
@@ -130,6 +130,8 @@ void bsp_Set485Baud(uint32_t _baud);
 
 void bsp_SetUart1Baud(uint32_t _baud);
 void bsp_SetUart2Baud(uint32_t _baud);
+uint16_t comGetALine(COM_PORT_E _ucPort, uint8_t *line);
+void comSendCharHex(COM_PORT_E _ucPort, uint8_t _ucByte);
 
 #endif
 

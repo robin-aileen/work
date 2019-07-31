@@ -182,6 +182,16 @@ void comSendChar(COM_PORT_E _ucPort, uint8_t _ucByte)
 	comSendBuf(_ucPort, &_ucByte, 1);
 }
 
+
+//字节数组转成十六进制字符串
+static uint8_t HexToCharArray[ ]="0123456789ABCDEF";
+
+void comSendCharHex(COM_PORT_E _ucPort, uint8_t _ucByte)
+{
+    comSendBuf(_ucPort, &HexToCharArray[ ( _ucByte&0xF0 )>>4 ], 1);
+	comSendBuf(_ucPort, &HexToCharArray[ _ucByte&0x0F ], 1);
+}
+
 /*
 *********************************************************************************************************
 *	函 数 名: comGetChar
@@ -211,6 +221,58 @@ uint16_t comGetLen(COM_PORT_E _ucPort)
 	pUart = ComToUart(_ucPort);
 	
 	return pUart->usRxCount;
+}
+
+
+uint16_t comGetALine(COM_PORT_E _ucPort, uint8_t *TEM)
+{
+    uint16_t i;
+    uint8_t temC;//, TEM[200];
+    uint16_t timeout;
+    
+    i = 0;
+    temC = 0;
+	timeout = 0;
+	
+	if( comGetLen(_ucPort)>2 )
+    {
+        while( timeout<2000)//( comGetLen(_ucPort) )
+        {
+            if( comGetChar(_ucPort, &temC) )
+        	{
+        	    TEM[i++] = temC;
+        	    
+        	    if(temC==0x0A)
+                {
+                    if( TEM[i-2] == 0x0D )//检测到AT指令
+                    {
+                        if( i >1 )
+                        {
+                            //TEM[i-1] = '\0';//把0x0D,0x0A转换为字符串结束符
+                            //TEM[i-2] = '\0';//
+                            TEM[i++] = '\0';
+                            //strncpy((char*)line, (char*)TEM, i);
+                            return i-1;//return i-3;//实际长度没有算0x0D，0x0A, 0x00
+                        }else
+                        {
+                            return 0;
+                        }
+                    }
+                }
+        	}
+        	else
+    	    {
+    	        vTaskDelay(1);
+    	        timeout++;
+    	        
+    	       //vTaskDelay(pdMS_TO_TICKS(1000));//delay
+    	    }
+        }
+        
+        return 0;
+    }
+	
+	return 0;
 }
 
 /*

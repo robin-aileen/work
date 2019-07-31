@@ -683,14 +683,14 @@ N/* Copyright (C) ARM Ltd., 1999,2014 */
 N/* All rights reserved */
 N
 N/*
-N * RCS $Revision$
-N * Checkin $Date$
+N * RCS $Revision: 185525 $
+N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
 N * Revising $Author: agrant $
 N */
 N
 N#ifndef __stdint_h
 N#define __stdint_h
-N#define __ARMCLIB_VERSION 5060037
+N#define __ARMCLIB_VERSION 5050106
 N
 N  #ifdef __INT64_TYPE__
 S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
@@ -882,9 +882,9 @@ N
 N    /* maximum value of pointer-holding unsigned integer type */
 N#if __sizeof_ptr == 8
 X#if 4 == 8
-S#define UINTPTR_MAX UINT64_MAX
+S#define UINTPTR_MAX INT64_MAX
 N#else
-N#define UINTPTR_MAX UINT32_MAX
+N#define UINTPTR_MAX INT32_MAX
 N#endif
 N
 N    /* 7.18.2.5 */
@@ -1049,7 +1049,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5060750 < 400677)
+X#if (5050106 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -1677,7 +1677,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5060750 < 400677)
+X#if (5050106 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -30380,7 +30380,7 @@ N*/
 N#define	UART1_FIFO_EN	1
 N#define	UART2_FIFO_EN	1
 N#define	UART3_FIFO_EN	0
-N#define	UART4_FIFO_EN	0
+N#define	UART4_FIFO_EN	1
 N#define	UART5_FIFO_EN	0
 N
 N/* RS485Ð¾Æ¬·¢ËÍÊ¹ÄÜGPIO, PB2 */
@@ -30425,10 +30425,10 @@ S	#define UART3_RX_BUF_SIZE	1*1024
 N#endif
 N
 N#if UART4_FIFO_EN == 1
-X#if 0 == 1
-S	#define UART4_BAUD			115200
-S	#define UART4_TX_BUF_SIZE	1*1024
-S	#define UART4_RX_BUF_SIZE	1*1024
+X#if 1 == 1
+N	#define UART4_BAUD			115200
+N	#define UART4_TX_BUF_SIZE	1*1024
+N	#define UART4_RX_BUF_SIZE	1*1024
 N#endif
 N
 N#if UART5_FIFO_EN == 1
@@ -30481,6 +30481,8 @@ Nvoid bsp_Set485Baud(uint32_t _baud);
 N
 Nvoid bsp_SetUart1Baud(uint32_t _baud);
 Nvoid bsp_SetUart2Baud(uint32_t _baud);
+Nuint16_t comGetALine(COM_PORT_E _ucPort, uint8_t *line);
+Nvoid comSendCharHex(COM_PORT_E _ucPort, uint8_t _ucByte);
 N
 N#endif
 N

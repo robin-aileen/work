@@ -321,6 +321,7 @@ static void vTaskSensor(void *pvParameters)
     }
 }
 
+
 //void LCD_ParaInit( void )
 //{
 //    //·½Ïò
