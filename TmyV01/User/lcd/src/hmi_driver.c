@@ -1059,7 +1059,7 @@ void SetSliderValue(uint16 screen_id,uint16 control_id,uint32 value)
 *  \brief      设置选择控件
 *  \param  screen_id 画面ID
 *  \param  control_id 控件ID
-*  \param  item 当前选项
+*  \param  item 当前选项 
 */
 void SetSelectorValue(uint16 screen_id,uint16 control_id,uint8 item)
 {
@@ -1133,7 +1133,7 @@ void AnimationPause(uint16 screen_id,uint16 control_id)
 *  \brief     播放制定帧
 *  \param  screen_id 画面ID
 *  \param  control_id 控件ID
-*  \param  frame_id 帧ID
+*  \param  frame_id 帧 ID EE B1 23 00 00 00 20 00 FF FC FF FF ;
 */
 void AnimationPlayFrame(uint16 screen_id,uint16 control_id,uint8 frame_id)
 {

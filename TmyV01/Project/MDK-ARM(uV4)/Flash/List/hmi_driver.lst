@@ -691,14 +691,14 @@ N/* Copyright (C) ARM Ltd., 1999,2014 */
 N/* All rights reserved */
 N
 N/*
-N * RCS $Revision: 185525 $
-N * Checkin $Date: 2014-05-29 12:44:48 +0100 (Thu, 29 May 2014) $
+N * RCS $Revision$
+N * Checkin $Date$
 N * Revising $Author: agrant $
 N */
 N
 N#ifndef __stdint_h
 N#define __stdint_h
-N#define __ARMCLIB_VERSION 5050106
+N#define __ARMCLIB_VERSION 5060037
 N
 N  #ifdef __INT64_TYPE__
 S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
@@ -890,9 +890,9 @@ N
 N    /* maximum value of pointer-holding unsigned integer type */
 N#if __sizeof_ptr == 8
 X#if 4 == 8
-S#define UINTPTR_MAX INT64_MAX
+S#define UINTPTR_MAX UINT64_MAX
 N#else
-N#define UINTPTR_MAX INT32_MAX
+N#define UINTPTR_MAX UINT32_MAX
 N#endif
 N
 N    /* 7.18.2.5 */
@@ -1057,7 +1057,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5050106 < 400677)
+X#if (5060750 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -1685,7 +1685,7 @@ X#if   1L
 N/* ARM armcc specific functions */
 N
 N#if (__ARMCC_VERSION < 400677)
-X#if (5050106 < 400677)
+X#if (5060750 < 400677)
 S  #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
 N#endif
 N
@@ -32820,7 +32820,7 @@ N/*!
 N*  \brief      设置选择控件
 N*  \param  screen_id 画面ID
 N*  \param  control_id 控件ID
-N*  \param  item 当前选项
+N*  \param  item 当前选项 
 N*/
 Nvoid SetSelectorValue(uint16 screen_id,uint16 control_id,uint8 item)
 Xvoid SetSelectorValue(unsigned short int screen_id,unsigned short int control_id,unsigned char item)
@@ -32930,7 +32930,7 @@ N/*!
 N*  \brief     播放制定帧
 N*  \param  screen_id 画面ID
 N*  \param  control_id 控件ID
-N*  \param  frame_id 帧ID
+N*  \param  frame_id 帧 ID EE B1 23 00 00 00 20 00 FF FC FF FF ;
 N*/
 Nvoid AnimationPlayFrame(uint16 screen_id,uint16 control_id,uint8 frame_id)
 Xvoid AnimationPlayFrame(unsigned short int screen_id,unsigned short int control_id,unsigned char frame_id)

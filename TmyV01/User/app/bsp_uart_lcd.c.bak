@@ -223,7 +223,7 @@ EE B1 10 00 2B 00 10 00 00 00 01 FF FC FF FF
                 }else
                 if( dg_sta == DG_ZDPK_UP ) //自动排空
                 {
-                    timer_beep = BEEP_TIMER[HX];
+                    timer_beep = BEEP_TIMER[ZDPK];
                     SetBuzzer( 10 ); //蜂鸣器
                 }
 //                if( Motor.speed ) //
@@ -369,6 +369,8 @@ void LCD_ParaInit( void )
     SetButtonValue(0, 6, 0);//
     SetButtonValue(0, 7, 1);//慢中快速，默认有效
     SetButtonValue(0, 8, 0);//
+    
+    AnimationPlayFrame(0,32,1);//显示wifi图标
 }
 
 

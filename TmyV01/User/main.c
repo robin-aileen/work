@@ -284,16 +284,16 @@ static void vTaskSensor(void *pvParameters)
             Tmy.Sensor.bit.top = 0; //未触顶
         }
         
-//        if( Tmy.State.bit.init ) //初始化完成
-//        {
-//            if( Motor.counter_step == 0 )//触低底检测
-//            {
-//                Tmy.Sensor.bit.bottom = 1; //已触底
-//            }else
-//            {
-//                Tmy.Sensor.bit.bottom = 0; //未触底
-//            }
-//        }
+        if( Tmy.State.bit.init ) //初始化完成
+        {
+            if( Motor.counter_step == 0 )//触低底检测
+            {
+                Tmy.Sensor.bit.bottom = 1; //已触底
+            }else
+            {
+                Tmy.Sensor.bit.bottom = 0; //未触底
+            }
+        }
         
         if( bsp_GetKeyState( KID_SYRINGE ) ) //注射器类型
         {
@@ -581,12 +581,12 @@ static void vTaskMotorCtrl(void *pvParameters)
 		}
 		
 		//紧急制动功能有待完善
-		if( Tmy.Key.jjzd ) //紧急制动
-		{
-			MOTOR_Stop();//步进电机停止
-			Tmy.Motor.state = MOTOR_STOP;//更改步进电机状态
-			dg_sta = DG_STOP;
-		}
+//		if( Tmy.Key.jjzd ) //紧急制动
+//		{
+//			MOTOR_Stop();//步进电机停止
+//			Tmy.Motor.state = MOTOR_STOP;//更改步进电机状态
+//			dg_sta = DG_STOP;
+//		}
 		
         switch( dg_sta )
         {
@@ -899,9 +899,12 @@ static void vTaskMotorCtrl(void *pvParameters)
                     }
                 }
                 
-				if( 1 )//在xxx速度下，到顶后自动归零
+				//if( 1 )//在xxx速度下，到顶后自动归零
+				if( ( Tmy.speed == NORMAL )   //中速
+			     || ( Tmy.speed == FAST    ) ) //FAST
 				{
-					;
+					SetTextValue(0,26,"顶杆归零...");
+                    dg_sta = DG_FIX_DOWN;//顶杆归零
 				}
 				
                 break;

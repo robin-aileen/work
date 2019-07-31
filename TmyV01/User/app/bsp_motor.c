@@ -21,10 +21,10 @@
 //uint8_t MOTOR_SPEED_DISPLAY[5][7] = { "慢慢速\0",    "慢速  \0", "中速  \0",   "快速  \0", "最快速\0" };
 //uint16_t MOTOR_SPEED_CYCLE[5]     = { CYCLE_SLOWEST, CYCLE_SLOW, CYCLE_NORMAL, CYCLE_FAST, CYCLE_FASTEST };
   
-uint16_t BEEP_TIMER[7]     = { 200, 100, 50, 33, 17, 20, 20 };
+uint16_t BEEP_TIMER[8]     = { 200, 100, 50, 33, 17, 20, 20, 0 };
 
-uint8_t MOTOR_SPEED_DISPLAY[7][9] = { "慢慢速  \0",    "慢速    \0", "中速    \0",   "快速    \0", "自动排空\0", "回吸    \0", "顶杆检查\0" };
-uint16_t MOTOR_SPEED_CYCLE[7]     = { CYCLE_SLOWEST, CYCLE_SLOW, CYCLE_NORMAL, CYCLE_FAST, CYCLE_ZDPK, CYCLE_HX, CYCLE_DGJC };
+uint8_t MOTOR_SPEED_DISPLAY[8][9] = { "慢慢速  \0",    "慢速    \0", "中速    \0",   "快速    \0", "最快速 \0", "自动排空\0", "回吸    \0", "顶杆检查\0" };
+uint16_t MOTOR_SPEED_CYCLE[8]     = { CYCLE_SLOWEST, CYCLE_SLOW, CYCLE_NORMAL, CYCLE_FAST, CYCLE_FASTEST, CYCLE_ZDPK, CYCLE_HX, CYCLE_DGJC };
                                 
 uint16_t MOTOR_SPEED_INDEX[4][3]={{ SLOWEST, SLOWEST, SLOWEST },
                                   { SLOW,    SLOW,    SLOW    },

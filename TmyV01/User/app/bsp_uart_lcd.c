@@ -369,6 +369,8 @@ void LCD_ParaInit( void )
     SetButtonValue(0, 6, 0);//
     SetButtonValue(0, 7, 1);//慢中快速，默认有效
     SetButtonValue(0, 8, 0);//
+    
+    AnimationPlayFrame(0,32,0);//显示wifi图标
 }
 
 
